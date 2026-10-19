@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "langchain-community>=0.4.2",
+]
 
 [project.scripts]
 rag-engineering = "rag_engineering:main"
