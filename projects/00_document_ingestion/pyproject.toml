@@ -1,0 +1,17 @@
+
+[project]
+name = "document-ingestion"
+version = "0.1.0"
+description = "Document ingestion and validation for the RAG engineering portfolio"
+requires-python = ">=3.13"
+dependencies = [
+    "langchain-community>=0.4.2",
+]
+
+[build-system]
+requires = ["uv_build>=0.10.0,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "document_ingestion"
+module-root = "src"

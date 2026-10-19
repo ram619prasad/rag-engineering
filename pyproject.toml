@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "document-ingestion",
     "langchain-community>=0.4.2",
 ]
 
@@ -14,3 +15,11 @@ rag-engineering = "rag_engineering:main"
 [build-system]
 requires = ["uv_build>=0.12.17,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.uv.workspace]
+members = [
+    "projects/00_document_ingestion",
+]
+
+[tool.uv.sources]
+document-ingestion = { workspace = true, editable = true }

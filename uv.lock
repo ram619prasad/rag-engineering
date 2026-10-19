@@ -2,6 +2,12 @@ version = 1
 revision = 3
 requires-python = ">=3.13"
 
+[manifest]
+members = [
+    "document-ingestion",
+    "rag-engineering",
+]
+
 [[package]]
 name = "aiohappyeyeballs"
 version = "2.7.1"
@@ -309,6 +315,17 @@ sdist = { url = "https://files.pythonhosted.org/packages/fc/f8/98eea607f65de6527
 wheels = [
     { url = "https://files.pythonhosted.org/packages/12/b3/231ffd4ab1fc9d679809f356cebee130ac7daa00d6d6f3206dd4fd137e9e/distro-1.9.0-py3-none-any.whl", hash = "sha256:7bffd925d65168f85027d8da9af6bddab658135b840670a223589bc0c8ef02b2", size = 20277, upload-time = "2023-12-24T09:54:30.421Z" },
 ]
+
+[[package]]
+name = "document-ingestion"
+version = "0.1.0"
+source = { editable = "projects/00_document_ingestion" }
+dependencies = [
+    { name = "langchain-community" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "langchain-community", specifier = ">=0.4.2" }]
 
 [[package]]
 name = "frozenlist"
@@ -1095,11 +1112,15 @@ name = "rag-engineering"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "document-ingestion" },
     { name = "langchain-community" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "langchain-community", specifier = ">=0.4.2" }]
+requires-dist = [
+    { name = "document-ingestion", editable = "projects/00_document_ingestion" },
+    { name = "langchain-community", specifier = ">=0.4.2" },
+]
 
 [[package]]
 name = "requests"
