@@ -18,28 +18,57 @@ def find_project_root(start: Path) -> Path:
 
 def main() -> None:
     project_root = find_project_root(Path(__file__).resolve().parent)
-    file_path = (
+    engineering_notes_file_path = (
         project_root / "datasets" / "sample" / "engineering_notes.md"
     )
+    meeting_notes_file_path = (
+        project_root / "datasets" / "sample" / "meeting_notes.md"
+    )
+    missing_notes_file_path = (
+        project_root / "datasets" / "sample" / "missing_notes.md"
+    )
 
-    documents = load_markdown(file_path)
-    print(f"Number of documents: {len(documents)}")
+    files_to_load = [engineering_notes_file_path, meeting_notes_file_path, missing_notes_file_path]
+    successful_files = []
+    failed_files = []
+    invalid_documents = []
+    valid_documents = []
 
-    for document in documents:
-        print("\n--- Metadata ---")
-        print(document.metadata)
 
-        print("\n--- Content preview ---")
-        print(document.page_content[:200])
+    for path in files_to_load:
+        try:
+            documents = load_markdown(path)
+            print(f"Number of documents: {len(documents)}")
+            successful_files.append(path)
 
-        errors = validate_document(document)
+            for document in documents:
+                print("\n--- Metadata ---")
+                print(document.metadata)
 
-        if errors:
-            print("Invalid document:")
-            for error in errors:
-                print(f"  - {error}")
-        else:
-            print("Document is valid")
+                print("\n--- Content preview ---")
+                print(document.page_content[:200])
+
+                errors = validate_document(document)
+
+                if errors:
+                    print("Invalid document:")
+                    invalid_documents.append(document)
+                    for error in errors:
+                        print(f"  - {error}")
+                else:
+                    valid_documents.append(document)
+                    print("Document is valid")
+        except Exception as e:
+            failed_files.append(path)
+            print(f"Failed to load the markdown at {path}: {e}")
+
+    
+    print("\n--- Ingestion Summary ---")
+    print(f"Total files: {len(files_to_load)}")
+    print(f"Successfully loaded files: {len(successful_files)}")
+    print(f"Failed files: {len(failed_files)}")
+    print(f"Valid documents: {len(valid_documents)}")
+    print(f"Invalid documents: {len(invalid_documents)}")
 
 
 if __name__ == "__main__":
