@@ -27,8 +27,29 @@ def main() -> None:
     missing_notes_file_path = (
         project_root / "datasets" / "sample" / "missing_notes.md"
     )
+    
+    docs_file_path = (
+        project_root / "datasets" / "sample" / "meeting_notes.docx"
+    )
 
-    files_to_load = [engineering_notes_file_path, meeting_notes_file_path, missing_notes_file_path]
+    meeting_notes_text_path = (
+        project_root / "datasets" / "sample" / "meeting_notes.txt"
+    )
+
+    html_file_path = (
+        project_root / "datasets" / "sample" / "rag.html"
+    )
+
+    unknown_file_path = (
+        project_root / "datasets" / "sample" / "rag.uvw"
+    )
+
+    files_to_load = [
+        engineering_notes_file_path, meeting_notes_file_path,
+        missing_notes_file_path, meeting_notes_text_path,
+        docs_file_path, html_file_path, unknown_file_path
+    ]
+
     successful_files = []
     failed_files = []
     invalid_documents = []

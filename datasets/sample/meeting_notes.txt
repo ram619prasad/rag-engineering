@@ -1,0 +1,22 @@
+Project Meeting Notes
+
+Date: October 19, 2026
+Topic: RAG Engineering Project
+
+Discussion:
+We discussed the document ingestion pipeline and the next
+milestone for our RAG engineering project.
+
+Decisions:
+1. Support multiple document formats.
+2. Validate extracted content before indexing.
+3. Record errors without stopping the entire batch.
+
+Next Steps:
+Implement hybrid search using BM25 and dense vector
+retrieval after completing document ingestion.
+
+Technical Notes:
+LangChain Document objects contain page_content and metadata.
+These fields provide a common representation for documents
+loaded from different sources.
