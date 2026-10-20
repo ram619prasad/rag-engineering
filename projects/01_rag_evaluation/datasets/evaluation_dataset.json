@@ -1,0 +1,33 @@
+
+[
+  {
+    "id": "q001",
+    "question": "What is the refund period?",
+    "expected_answer": "Customers can request a refund within 14 days of purchase.",
+    "relevant_chunk_ids": ["refund_01"]
+  },
+  {
+    "id": "q002",
+    "question": "How long is the product warranty?",
+    "expected_answer": "All products include a 12-month limited warranty.",
+    "relevant_chunk_ids": ["warranty_01"]
+  },
+  {
+    "id": "q003",
+    "question": "How long does standard shipping take?",
+    "expected_answer": "Standard shipping takes 3–5 business days.",
+    "relevant_chunk_ids": ["shipping_01"]
+  },
+  {
+    "id": "q004",
+    "question": "What is the refund period, and how long does shipping take?",
+    "expected_answer": "Customers can request a refund within 14 days of purchase, and standard shipping takes 3–5 business days.",
+    "relevant_chunk_ids": ["refund_01", "shipping_01"]
+  },
+  {
+    "id": "q005",
+    "question": "Can I extend my warranty to five years?",
+    "expected_answer": "The supplied knowledge base does not specify whether the warranty can be extended to five years.",
+    "relevant_chunk_ids": []
+  }
+]
