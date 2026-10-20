@@ -9,9 +9,9 @@ The goal is to identify where a RAG system fails and compare improvements using 
 ## Learning Tasks
 
 ### Module 1: Evaluation Fundamentals
-- [ ] Understand why RAG evaluation is necessary
-- [ ] Understand retrieval failures vs. generation failures
-- [ ] Understand the difference between offline and online evaluation
+- [x] Understand why RAG evaluation is necessary
+- [x] Understand retrieval failures vs. generation failures
+- [x] Understand the difference between offline and online evaluation
 
 ### Module 2: Evaluation Dataset
 - [ ] Define an evaluation dataset structure
@@ -50,6 +50,8 @@ The goal is to identify where a RAG system fails and compare improvements using 
 - Prefer small, practical exercises over unnecessary abstractions.
 - Manually verify results; automated tests are out of scope for now.
 - Commit and push each meaningful topic separately.
+
+
 
 ## Completion Criteria
 
