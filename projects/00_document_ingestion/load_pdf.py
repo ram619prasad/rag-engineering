@@ -1,6 +1,5 @@
 from pathlib import Path
 import pymupdf
-from pathlib import Path
 
 from document_ingestion.loaders.pdf_loader import load_pdf
 
@@ -13,9 +12,6 @@ pdf_path = (
 
 
 def main() -> None:
-    # project_root = Path(__file__).resolve().parents[2]
-    # pdf_path = project_root / "datasets" / "sample" / "tech_doc.pdf"
-
     documents = load_pdf(pdf_path)
 
     for document in documents:

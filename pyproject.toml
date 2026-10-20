@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "bs4>=0.0.2",
+    "docling>=2.140.0",
     "document-ingestion",
     "docx2txt>=0.9",
     "langchain-community>=0.4.2",
