@@ -41,20 +41,20 @@ def main() -> None:
     )
 
     pdf_file_path = (
-        project_root / "datasets" / "sample" / "sample.pdf"
+        project_root / "datasets" / "sample" / "tech_docs.pdf"
     )
 
     unknown_file_path = (
         project_root / "datasets" / "sample" / "rag.uvw"
     )
 
-    files_to_load = [
-        engineering_notes_file_path, meeting_notes_file_path,
-        missing_notes_file_path, meeting_notes_text_path,
-        docs_file_path, html_file_path,
-        pdf_file_path, unknown_file_path
-    ]
-    # files_to_load = [pdf_file_path]
+    # files_to_load = [
+    #     engineering_notes_file_path, meeting_notes_file_path,
+    #     missing_notes_file_path, meeting_notes_text_path,
+    #     docs_file_path, html_file_path,
+    #     pdf_file_path, unknown_file_path
+    # ]
+    files_to_load = [pdf_file_path]
 
     successful_files = []
     failed_files = []
