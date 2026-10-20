@@ -310,6 +310,19 @@ wheels = [
 ]
 
 [[package]]
+name = "bm25-retriever"
+version = "0.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "langchain" },
+    { name = "rank-bm25" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/50/dd/f6cd246dd44931b2dc8787a7ec45a32c6b10bf795a41095d69c20796edb2/bm25_retriever-0.3.tar.gz", hash = "sha256:3d3a45f74b3a79e287bb7ebf6d4ed22626ad79f432c2478656d5e42ae32ab8ea", size = 2678, upload-time = "2025-05-06T15:31:41.528Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/39/e8/1c8d48015b7e757c618cdfe6f3739b82f1b26e70d45fd701564a0262c7c6/bm25_retriever-0.3-py3-none-any.whl", hash = "sha256:a057534856fa4e856d46c9ffc8997e49732d7d46021f5bf3b034b5cbe26dc2e1", size = 3010, upload-time = "2025-05-06T15:31:40.182Z" },
+]
+
+[[package]]
 name = "bs4"
 version = "0.0.2"
 source = { registry = "https://pypi.org/simple" }
@@ -3471,6 +3484,7 @@ name = "rag-engineering"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "bm25-retriever" },
     { name = "bs4" },
     { name = "chromadb" },
     { name = "docling" },
@@ -3479,6 +3493,7 @@ dependencies = [
     { name = "fastapi" },
     { name = "langchain" },
     { name = "langchain-chroma" },
+    { name = "langchain-classic" },
     { name = "langchain-community" },
     { name = "langchain-core" },
     { name = "langchain-openai" },
@@ -3490,12 +3505,14 @@ dependencies = [
     { name = "pytesseract" },
     { name = "python-docx" },
     { name = "python-dotenv" },
+    { name = "rank-bm25" },
     { name = "scikit-learn" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "bm25-retriever", specifier = ">=0.3" },
     { name = "bs4", specifier = ">=0.0.2" },
     { name = "chromadb", specifier = ">=1.5.9" },
     { name = "docling", specifier = ">=2.140.0" },
@@ -3504,6 +3521,7 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.151.0" },
     { name = "langchain", specifier = ">=1.4.6" },
     { name = "langchain-chroma", specifier = ">=1.1.0" },
+    { name = "langchain-classic", specifier = ">=1.0.8" },
     { name = "langchain-community", specifier = ">=0.4.2" },
     { name = "langchain-core", specifier = ">=1.6.12" },
     { name = "langchain-openai", specifier = ">=1.7.2" },
@@ -3515,8 +3533,21 @@ requires-dist = [
     { name = "pytesseract", specifier = ">=0.3.13" },
     { name = "python-docx", specifier = ">=1.2.0" },
     { name = "python-dotenv", specifier = ">=1.2.4" },
+    { name = "rank-bm25", specifier = ">=0.2.2" },
     { name = "scikit-learn", specifier = ">=1.9.1" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.54.0" },
+]
+
+[[package]]
+name = "rank-bm25"
+version = "0.2.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fc/0a/f9579384aa017d8b4c15613f86954b92a95a93d641cc849182467cf0bb3b/rank_bm25-0.2.2.tar.gz", hash = "sha256:096ccef76f8188563419aaf384a02f0ea459503fdf77901378d4fd9d87e5e51d", size = 8347, upload-time = "2022-02-16T12:10:52.196Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2a/21/f691fb2613100a62b3fa91e9988c991e9ca5b89ea31c0d3152a3210344f9/rank_bm25-0.2.2-py3-none-any.whl", hash = "sha256:7bd4a95571adadfc271746fa146a4bcfd89c0cf731e49c3d1ad863290adbe8ae", size = 8584, upload-time = "2022-02-16T12:10:50.626Z" },
 ]
 
 [[package]]

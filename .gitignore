@@ -18,3 +18,9 @@ data/processed/
 .DS_Store
 .idea/
 .vscode/
+
+# ChromaDB persisted vector index
+.chroma/
+
+# Generated reports and local databases
+.bm25/
