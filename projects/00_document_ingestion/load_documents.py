@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from document_ingestion.loaders.markdown_loader import load_markdown
+from document_ingestion.loaders.document_loader import load_document
 from document_ingestion.validation.document_validator import validate_document
 
 
@@ -40,6 +40,10 @@ def main() -> None:
         project_root / "datasets" / "sample" / "rag.html"
     )
 
+    pdf_file_path = (
+        project_root / "datasets" / "sample" / "sample.pdf"
+    )
+
     unknown_file_path = (
         project_root / "datasets" / "sample" / "rag.uvw"
     )
@@ -47,8 +51,10 @@ def main() -> None:
     files_to_load = [
         engineering_notes_file_path, meeting_notes_file_path,
         missing_notes_file_path, meeting_notes_text_path,
-        docs_file_path, html_file_path, unknown_file_path
+        docs_file_path, html_file_path,
+        pdf_file_path, unknown_file_path
     ]
+    # files_to_load = [pdf_file_path]
 
     successful_files = []
     failed_files = []
@@ -58,7 +64,7 @@ def main() -> None:
 
     for path in files_to_load:
         try:
-            documents = load_markdown(path)
+            documents = load_document(path)
             print(f"Number of documents: {len(documents)}")
             successful_files.append(path)
 
