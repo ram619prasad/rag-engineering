@@ -1,0 +1,86 @@
+[
+  {
+    "document_id": "doc_001",
+    "title": "Connection Reset Errors",
+    "content": "Error code ERR_CONN_RESET_1042 indicates that the connection was unexpectedly reset. Common causes include network interruptions, server restarts, firewall rules, and premature connection termination. Check server logs and network connectivity to identify the root cause.",
+    "category": "troubleshooting",
+    "source": "connection_errors.md"
+  },
+  {
+    "document_id": "doc_002",
+    "title": "Retry and Backoff Policy",
+    "content": "When a request fails because of a transient network error, clients should retry the request with exponential backoff. The recommended initial delay is 1 second, doubling after each failed attempt, with a maximum delay of 32 seconds. Random jitter helps prevent many clients from retrying simultaneously.",
+    "category": "reliability",
+    "source": "retry_policy.md"
+  },
+  {
+    "document_id": "doc_003",
+    "title": "API Rate Limits",
+    "content": "The API permits up to 100 requests per minute per client. Requests exceeding this limit receive HTTP status code 429 Too Many Requests. Clients should respect the Retry-After response header before sending another request.",
+    "category": "api",
+    "source": "rate_limits.md"
+  },
+  {
+    "document_id": "doc_004",
+    "title": "Authentication and API Keys",
+    "content": "API requests must include a valid API key in the Authorization header using the Bearer token scheme. Missing or invalid credentials result in HTTP 401 Unauthorized. API keys should be stored in environment variables or a secret manager and must never be committed to source control.",
+    "category": "security",
+    "source": "authentication.md"
+  },
+  {
+    "document_id": "doc_005",
+    "title": "Database Connection Pooling",
+    "content": "Connection pooling reuses existing database connections instead of creating a new connection for every query. Configure a maximum pool size based on database capacity and application concurrency. Monitor pool exhaustion, connection wait time, and timeout errors when diagnosing database performance issues.",
+    "category": "database",
+    "source": "database_pooling.md"
+  },
+  {
+    "document_id": "doc_006",
+    "title": "Caching Strategy",
+    "content": "Caching stores frequently accessed data so that repeated requests can be served with lower latency. A time-to-live (TTL) determines how long a cache entry remains valid. Cache invalidation is necessary when underlying data changes. Monitor cache hit rate, miss rate, memory usage, and stale responses.",
+    "category": "performance",
+    "source": "caching.md"
+  },
+  {
+    "document_id": "doc_007",
+    "title": "Kubernetes Resource Limits",
+    "content": "Kubernetes CPU requests specify the CPU resources a container is expected to need, while CPU limits cap its CPU usage. Memory requests help the scheduler place workloads, and memory limits constrain memory consumption. Containers that exceed their memory limit may be terminated with an OOMKilled status.",
+    "category": "infrastructure",
+    "source": "kubernetes_resources.md"
+  },
+  {
+    "document_id": "doc_008",
+    "title": "Reducing Kubernetes Costs",
+    "content": "Kubernetes infrastructure costs can be reduced by right-sizing CPU and memory requests, removing idle workloads, improving bin packing, and using autoscaling. Review actual resource utilization before changing requests or limits. Monitor cost per workload alongside latency and reliability to avoid savings that degrade service quality.",
+    "category": "infrastructure",
+    "source": "kubernetes_costs.md"
+  },
+  {
+    "document_id": "doc_009",
+    "title": "Observability and Incident Response",
+    "content": "Effective incident response relies on logs, metrics, and distributed traces. Logs provide event details, metrics reveal trends such as error rate and latency, and traces show how requests travel across services. Correlate these signals using request IDs to isolate failures and identify bottlenecks.",
+    "category": "observability",
+    "source": "incident_response.md"
+  },
+  {
+    "document_id": "doc_010",
+    "title": "Vector Search and Embeddings",
+    "content": "An embedding model converts text into a numerical vector that represents learned semantic relationships. Semantic search embeds a query and compares it with document vectors using a similarity measure such as cosine similarity. Vector search can find conceptually related text even when the query and document use different words.",
+    "category": "ai",
+    "source": "vector_search.md"
+  },
+  {
+    "document_id": "doc_011",
+    "title": "Hybrid Retrieval",
+    "content": "Hybrid retrieval combines lexical search with semantic vector search. Lexical methods are useful for exact identifiers, error codes, and rare technical terms, while semantic retrieval captures conceptual similarity. Reciprocal Rank Fusion combines ranked result lists without requiring their raw scores to share the same scale.",
+    "category": "ai",
+    "source": "hybrid_retrieval.md"
+  },
+  {
+    "document_id": "doc_012",
+    "title": "Document Chunking",
+    "content": "Document chunking splits long documents into smaller passages that can be retrieved independently. Chunks should preserve enough context to be meaningful while remaining focused on a specific topic. Chunk size and overlap influence retrieval precision, context completeness, embedding cost, and downstream answer quality.",
+    "category": "rag",
+    "source": "chunking.md"
+  }
+]
