@@ -1,0 +1,42 @@
+{
+  "builder_name": "parquet",
+  "citation": "",
+  "config_name": "queries",
+  "dataset_name": "beir-scifact",
+  "dataset_size": 111225,
+  "description": "",
+  "download_size": 46710,
+  "features": {
+    "id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "text": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 157935,
+  "splits": {
+    "test": {
+      "name": "test",
+      "num_bytes": 30477,
+      "num_examples": 300,
+      "dataset_name": "beir-scifact"
+    },
+    "train": {
+      "name": "train",
+      "num_bytes": 80748,
+      "num_examples": 809,
+      "dataset_name": "beir-scifact"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}
