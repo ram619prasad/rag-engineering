@@ -1,4 +1,5 @@
 from pydantic import BaseModel, ConfigDict, Field
+from typing import Literal
 
 
 class RetrievalResult(BaseModel):
@@ -22,3 +23,25 @@ class Chunk(BaseModel):
 
     source: str = "scifact" # metadata
     content_hash: str # metadata to avoid reembedding
+    
+class QueryClassification(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    query_type: Literal[
+        "exact_match",
+        "factual",
+        "explanatory",
+        "comparison",
+        "troubleshooting",
+        "multi_hop",
+    ]
+
+    retrieval_strategy: Literal[
+        "bm25",
+        "semantic",
+        "hybrid",
+    ]
+
+    reason: str = Field(
+        description="Brief explanation for the classification."
+    )

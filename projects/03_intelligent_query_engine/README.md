@@ -24,7 +24,7 @@ Dataset files are cached locally after initial download. Original document IDs a
 
 - [x] Module 01 — SciFact Dataset Integration
 - [x] Module 02 — Baseline Retrieval
-- [ ] Module 03 — Query Understanding and Classification
+- [x] Module 03 — Query Understanding and Classification
 - [ ] Module 04 — Query Rewriting
 - [ ] Module 05 — Multi-Query Retrieval
 - [ ] Module 06 — Query Decomposition
@@ -58,10 +58,6 @@ Synthetic datasets are useful for learning but insufficient for evaluating retri
 ### Challenges and Limitations
 
 Loading a dataset alone does not establish retrieval quality. We need searchable indexes and a reproducible evaluation baseline.
-
-### Next Module
-
-Module 02 implements and evaluates lexical, semantic, and hybrid retrieval.
 
 ---
 
@@ -156,10 +152,53 @@ This demonstrates that even a functioning retrieval pipeline can fail to priorit
 - Incremental indexing detects additions and changed text but does not yet reconcile deleted source documents.
 - Query embeddings may be generated repeatedly across separate benchmark runs.
 
-### Next Module — Query Understanding and Classification
+---
 
-Investigate how the characteristics of a query affect retrieval performance.
+## Module 03 — Query Understanding & Classification
 
-The next module will classify queries and examine when different retrieval strategies are appropriate.
+### Problem
 
-The goal is to select retrieval behavior based on query requirements rather than assuming that one strategy is optimal for every question.
+Different queries may benefit from different retrieval strategies.
+
+The baseline benchmark showed that semantic retrieval had the highest overall quality on SciFact, while BM25 offered substantially lower latency.
+
+We want to understand query characteristics before deciding which retrieval method to use.
+
+### Implementation
+
+- Implemented `QueryClassifier` using LangChain and `gpt-4o-mini`.
+- Used `ChatPromptTemplate` for classification instructions.
+- Used LangChain's `with_structured_output()` with Pydantic validation.
+- Classified queries into exact-match, factual, explanatory, comparison, troubleshooting, and multi-hop categories.
+- Returned a suggested retrieval strategy: BM25, Semantic, or Hybrid.
+- Measured end-to-end classification latency using `time.perf_counter()`.
+
+### Results
+
+| Query | Classification | Strategy | Latency |
+|---|---|---|---:|
+| Error code | Exact match | BM25 | 1608.12 ms |
+| Semantic search explanation | Explanatory | Semantic | 3011.04 ms |
+| BM25 vs vector search | Comparison | Hybrid | 1637.94 ms |
+| Kubernetes troubleshooting | Troubleshooting | Hybrid | 1434.23 ms |
+| Scientific claim | Factual | Semantic | 1531.13 ms |
+
+**Average classification latency: 1844.49 ms.**
+
+All five queries produced valid structured outputs with plausible classifications and retrieval recommendations.
+
+### Findings
+
+1. LangChain's structured-output functionality simplifies LLM classification.
+2. Pydantic provides consistent classification results without manual JSON parsing.
+3. The classifier produces reasonable recommendations but does not guarantee optimal retrieval.
+4. LLM classification adds substantial latency compared with BM25 and semantic retrieval.
+5. Query classification and retrieval strategy selection are related but distinct decisions.
+
+### Challenges and Limitations
+
+- LLM calls introduce latency and API costs.
+- Five manually selected examples are insufficient to establish classification accuracy.
+- Retrieval strategy recommendations have not yet been evaluated against query-level benchmark performance.
+- An LLM call for simple exact-match queries may be unnecessary.
+- A rule-based classifier or lightweight routing layer could provide a lower-latency alternative.
