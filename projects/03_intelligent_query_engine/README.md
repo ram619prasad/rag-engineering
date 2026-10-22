@@ -265,3 +265,93 @@ The amortized rewriting figure measures batch throughput, not individual LLM req
 Do not enable unconditional query rewriting as the default retrieval strategy based on these results.
 
 Retain the original semantic retrieval baseline and investigate selective rewriting when query characteristics justify it.
+
+---
+
+## Module 05 — Multi-Query Retrieval
+
+### Problem
+
+Single-query retrieval may fail to discover relevant documents when the user's query does not align well with terminology in the document collection.
+
+Multi-query retrieval addresses this by generating alternative query formulations and retrieving documents using each variation.
+
+The objective is to improve evidence coverage through multiple search perspectives.
+
+### Implementation
+
+- Used LangChain's `MultiQueryRetriever` from `langchain-classic`.
+- Integrated the existing `SemanticRetriever` through a lightweight LangChain `BaseRetriever` adapter.
+- Used `gpt-4o-mini` to generate three alternative queries.
+- Enabled `include_original=True` to retain the original query.
+- Retrieved five documents per query formulation.
+- Reused the existing OpenAI embeddings and persistent ChromaDB index.
+- Used LangChain's built-in document deduplication.
+- Evaluated candidate recall using `ir-measures` and SciFact relevance judgments.
+- Used a reproducible random sample of ten queries with seed 42.
+
+### Architecture
+
+```text
+Original Query
+      |
+      v
+LangChain MultiQueryRetriever
+      |
+      +-- Original Query
+      +-- Generated Query 1
+      +-- Generated Query 2
+      +-- Generated Query 3
+      |
+      v
+Semantic Retrieval per Query
+      |
+      v
+Combine and Deduplicate Documents
+      |
+      v
+Unique Candidate Document Pool
+```
+
+### Evaluation Results
+
+| Metric | Semantic Top-20 | Multi-Query |
+|---|---:|---:|
+| Candidate Recall | 0.8000 | 0.7000 |
+| Average Unique Candidates | 20 | 7.70 |
+| Average Latency | 323.17 ms | 3684.23 ms |
+
+**Evaluation scope:** Ten randomly selected SciFact test queries, with a fixed random seed of 42.
+
+The semantic baseline retrieved twenty documents per query. Multi-query retrieved five per formulation, followed by deduplication.
+
+This is an exploratory candidate-coverage comparison rather than an equal-unique-candidate-budget benchmark.
+
+### Observations
+
+1. Multi-query generation worked correctly using LangChain's built-in functionality.
+2. Alternative queries frequently expressed similar meanings rather than exploring substantially different retrieval perspectives.
+3. Retrieved documents overlapped considerably, reducing the size of the unique candidate pool.
+4. Multi-query candidate recall was lower than the single-query semantic baseline in this sample.
+5. Multi-query introduced substantial additional latency from LLM query generation and repeated semantic retrieval.
+6. Generating more queries does not guarantee retrieving more unique relevant documents.
+
+### Dataset Suitability
+
+SciFact primarily contains scientific claims and focused factual retrieval tasks.
+
+Many queries are already precise, reducing the opportunity for alternative formulations to recover additional information.
+
+Multi-query retrieval may be more beneficial for conversational, ambiguous, broad, or multi-faceted questions that require complementary evidence.
+
+The results should not be generalized to other datasets or use cases without further experiments.
+
+### Challenges and Limitations
+
+- Evaluation covered only ten queries.
+- Semantic and multi-query configurations used different unique candidate budgets.
+- Generated queries were not necessarily diverse.
+- The deduplicated document union did not provide a meaningful global relevance ranking.
+- Candidate recall was evaluated, but MRR and nDCG were not calculated for the multi-query union.
+- LLM generation and repeated retrieval increased API overhead and latency.
+- No query-level analysis was conducted to determine which query characteristics benefit most.
