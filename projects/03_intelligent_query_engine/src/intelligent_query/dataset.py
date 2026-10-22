@@ -2,9 +2,12 @@
 from pathlib import Path
 from datasets import DatasetDict, load_dataset, load_from_disk
 from collections import Counter
+import tiktoken
 
 
 DATASET_NAME = "Hyukkyu/beir-scifact"
+MODEL = "text-embedding-3-small"
+PRICE_PER_MILLION_TOKENS = 0.02
 PROJECT_DIR = Path(__file__).resolve().parents[2]
 DATASET_DIR = PROJECT_DIR / "datasets" / "scifact"
 
@@ -39,7 +42,7 @@ def load_scifact():
     )
 
 
-def validate_scifact(corpus, queries, qrels) -> None:
+def _validate_scifact(corpus, queries, qrels) -> None:
     # Collect all IDs
     document_ids = [str(doc["id"]) for doc in corpus]
     query_ids = [str(query["id"]) for query in queries]
@@ -106,7 +109,7 @@ def main() -> None:
     print(f"Queries: {len(queries)}")
     print(f"Qrels: {len(qrels)}")
 
-    validate_scifact(corpus, queries, qrels)
+    _validate_scifact(corpus, queries, qrels)
     
 
 if __name__ == "__main__":

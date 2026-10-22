@@ -12,6 +12,7 @@ dependencies = [
     "document-ingestion",
     "docx2txt>=0.9",
     "fastapi>=0.151.0",
+    "ir-measures>=0.4.3",
     "langchain>=1.4.6",
     "langchain-chroma>=1.1.0",
     "langchain-classic>=1.0.8",
