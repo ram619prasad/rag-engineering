@@ -202,3 +202,66 @@ All five queries produced valid structured outputs with plausible classification
 - Retrieval strategy recommendations have not yet been evaluated against query-level benchmark performance.
 - An LLM call for simple exact-match queries may be unnecessary.
 - A rule-based classifier or lightweight routing layer could provide a lower-latency alternative.
+
+---
+
+## Module 04 — Query Rewriting
+
+### Problem
+
+User queries may be vague, conversational, or poorly aligned with terminology in source documents.
+
+Query rewriting aims to improve retrieval by transforming queries into clearer, search-oriented expressions while preserving their original intent.
+
+### Implementation
+
+- Implemented `QueryRewriter` using LangChain.
+- Used `ChatPromptTemplate`, `ChatOpenAI` (`gpt-4o-mini`), and `StrOutputParser`.
+- Added input validation and a fallback for empty model responses.
+- Added concurrent rewriting using LangChain's built-in `.batch()` API with `max_concurrency=5`.
+- Reused the existing SemanticRetriever, ChromaDB index, and `ir-measures` evaluation infrastructure.
+- Compared original and rewritten queries across all 300 SciFact test queries.
+
+### Evaluation Results
+
+| Metric | Original | Rewritten |
+|---|---:|---:|
+| Recall@5 | 0.7999 | 0.7891 |
+| Recall@10 | 0.8549 | 0.8609 |
+| MRR@10 | 0.6903 | 0.6921 |
+| nDCG@10 | 0.7242 | 0.7277 |
+
+### Latency Results
+
+- Batch rewriting time for 300 queries: 20.15 seconds
+- Amortized rewriting time/query: 67.15 ms
+- Original semantic retrieval/query: 334.64 ms
+- Rewritten semantic retrieval/query: 349.49 ms
+- Amortized rewriting + retrieval/query: 416.65 ms
+- Added amortized latency: approximately 24.5%
+
+The amortized rewriting figure measures batch throughput, not individual LLM request latency.
+
+### Findings
+
+1. Rewriting improved Recall@10 by 0.60 percentage points but reduced Recall@5 by 1.08 percentage points.
+2. MRR@10 and nDCG@10 showed marginal improvements.
+3. Rewriting did not demonstrate a clear overall retrieval-quality advantage.
+4. LangChain batching enabled concurrent LLM requests without custom concurrency implementation.
+5. Rewriting introduced additional API calls, operational cost, and latency.
+6. Scientific claims that are already precise may gain little from rewriting.
+
+### Challenges and Limitations
+
+- Rewriting may alter the original query intent or introduce assumptions.
+- Quality improvements were small and have not been tested for statistical significance.
+- No query-level failure analysis has yet established which classes of queries benefit most.
+- Batched throughput does not directly represent real-time single-query latency.
+- Semantic retrieval remains sequential in this experiment.
+- The experiment did not compare alternative rewrite prompts or models.
+
+### Architectural Decision
+
+Do not enable unconditional query rewriting as the default retrieval strategy based on these results.
+
+Retain the original semantic retrieval baseline and investigate selective rewriting when query characteristics justify it.
