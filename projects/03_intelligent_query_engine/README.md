@@ -499,3 +499,262 @@ This is a single-query success, not evidence of consistent improvement.
 Keep HyDE as an optional, specialized retrieval strategy rather than enabling it by default.
 
 The existing Semantic Retriever remains the preferred baseline until further evidence demonstrates a reliable advantage.
+
+
+---
+
+## Module 08 — Intelligent Query Routing with LangGraph
+
+### Problem
+
+Different queries may benefit from different retrieval strategies. However, always using expensive LLM classification can increase latency without guaranteeing better retrieval.
+
+### Implementation
+
+- Implemented a LangGraph workflow using `StateGraph`, `START`, `END`, and conditional edges.
+- Reused the existing LLM-based QueryClassifier.
+- Connected BM25, Semantic, and Hybrid retrievers as separate graph nodes.
+- Used shared graph state to pass the query, selected strategy, and retrieval results.
+- Executed only the selected retrieval branch.
+- Tested routing with scientific questions related to the SciFact corpus.
+
+### Experimental Results
+
+| Query type | Selected retrieval strategy | Latency |
+|---|---|---:|
+| Explanatory | Semantic | 2512.38 ms |
+| Factual | Semantic | 1635.74 ms |
+| Comparison | Semantic | 1836.63 ms |
+| Multi-hop | Hybrid | 1733.95 ms |
+
+Average end-to-end routed latency: **1929.68 ms**.
+
+### Findings
+
+1. LangGraph successfully executed conditional retrieval paths.
+2. Three queries were routed to Semantic Retrieval and one to Hybrid Retrieval.
+3. The LLM classifier introduced substantial routing overhead.
+4. Selecting Hybrid for a multi-hop question did not guarantee complete evidence coverage.
+5. Semantic Retrieval remains a strong default for the current SciFact workload.
+6. Routing correctness and retrieval-quality improvement are separate evaluation objectives.
+
+### Limitations
+
+- Only four illustrative scientific queries were used.
+- The experiment was not a controlled comparison against Semantic-only retrieval on identical queries.
+- The four queries were not evaluated against SciFact relevance judgments.
+- No retrieval-quality improvement attributable to routing was established.
+- Query-classifier decisions depend on the LLM and prompt.
+- LLM-based routing introduces additional latency and token costs.
+
+### Architectural Decision
+
+Do not enable LLM-based routing by default in this implementation.
+
+For future production systems, consider:
+
+- Lightweight deterministic routing for obvious cases.
+- Semantic Retrieval as the default path.
+- LLM-based routing only when its benefits justify the extra cost.
+- Query decomposition for genuinely multi-part information needs.
+
+---
+
+# Project 03 — Intelligent Query Engine: Evaluation Summary
+
+## 1. Objective
+
+Evaluate different retrieval and query-processing techniques to understand their impact on retrieval relevance, latency, complexity, and architectural suitability.
+
+The goal is to select techniques based on experimental evidence rather than assuming advanced techniques always improve RAG performance.
+
+## 2. Dataset
+
+**Dataset:** BEIR SciFact (`Hyukkyu/beir-scifact`)
+
+- Corpus: 5,183 scientific abstracts
+- Test queries: 300
+- Relevance judgments: 339
+- Embedding model: `text-embedding-3-small`
+- Vector database: ChromaDB
+- LLM: `gpt-4o-mini`
+- Evaluation library: `ir-measures`
+
+The existing corpus and persisted vector index were reused across experiments.
+
+Not all experiments used the full 300-query test set. Results from different query subsets must not be treated as directly comparable.
+
+## 3. Baseline Retrieval
+
+**Evaluation size:** 300 queries
+
+| Metric | BM25 | Semantic | Hybrid |
+|---|---:|---:|---:|
+| Recall@5 | 0.7284 | 0.7999 | 0.7727 |
+| Recall@10 | 0.7740 | 0.8549 | 0.8466 |
+| MRR@10 | 0.6186 | 0.6903 | 0.6894 |
+| nDCG@10 | 0.6519 | 0.7242 | 0.7228 |
+| Average latency (ms) | 5.80 | 302.68 | 328.50 |
+
+### Findings
+
+- Semantic Retrieval achieved the strongest overall retrieval quality.
+- BM25 provided substantially lower latency.
+- Hybrid Retrieval did not improve upon Semantic Retrieval in the tested configuration.
+- Increased architectural complexity did not guarantee higher relevance.
+
+## 4. Query Classification
+
+**Evaluation size:** Five illustrative queries
+
+- Used LLM-based structured classification.
+- Produced plausible query types and retrieval-strategy recommendations.
+- Average classification latency: 1,844.49 ms.
+
+### Findings
+
+Structured LLM classification is useful for query understanding but introduces substantial overhead.
+
+The small example set did not establish classification accuracy or retrieval-quality improvements.
+
+## 5. Query Rewriting
+
+**Evaluation size:** 300 queries
+
+| Metric | Original | Rewritten |
+|---|---:|---:|
+| Recall@5 | 0.7999 | 0.7891 |
+| Recall@10 | 0.8549 | 0.8609 |
+| MRR@10 | 0.6903 | 0.6921 |
+| nDCG@10 | 0.7242 | 0.7277 |
+
+### Findings
+
+- Recall@10 improved slightly.
+- Recall@5 decreased.
+- MRR@10 and nDCG@10 improved marginally.
+- The benefits were too small and mixed to justify unconditional query rewriting.
+
+Batch rewriting took approximately 20.15 seconds for 300 queries at concurrency five, or 67.15 ms per query amortized. This is not equivalent to single-request online latency.
+
+## 6. Multi-Query Retrieval
+
+**Evaluation size:** Ten sampled queries
+
+| Measurement | Semantic | Multi-Query |
+|---|---:|---:|
+| Candidate Recall@20 | 0.8000 | 0.7000 |
+| Average latency (ms) | 323.17 | 3684.23 |
+
+Multi-Query produced an average of 7.7 unique candidates, while the Semantic baseline returned 20.
+
+### Findings
+
+- Multi-Query generated alternative query formulations and collected distinct candidates.
+- The limited sample and unequal candidate budgets prevent a fair quality conclusion.
+- Additional LLM generation substantially increased latency.
+- Multi-Query was not demonstrated to improve retrieval on this dataset.
+
+## 7. Query Decomposition
+
+**Evaluation type:** Qualitative demonstration
+
+Original question covered both inflammatory biomarkers and the effects of COPD exacerbations on survival.
+
+Results:
+
+- Generated subquestions: 2
+- Documents per subquestion: 3
+- Total unique documents: 6
+- Duplicate occurrences: 0
+
+### Findings
+
+Query Decomposition successfully represented distinct information needs and retrieved nonoverlapping evidence pools.
+
+Document diversity does not prove relevance or final-answer correctness. The experiment did not include multi-hop relevance judgments.
+
+## 8. HyDE
+
+**Evaluation size:** Ten sampled queries
+
+| Metric | Semantic | HyDE |
+|---|---:|---:|
+| Recall@5 | 0.7000 | 0.6000 |
+| Recall@10 | 0.8000 | 0.7000 |
+| MRR@10 | 0.6343 | 0.5625 |
+| nDCG@10 | 0.6720 | 0.5946 |
+| Average latency (ms) | 282.62 | 2828.53 |
+
+### Notable Case
+
+For the query "0-dimensional biomaterials show inductive properties," HyDE retrieved known relevant document `31715818` at rank one, while direct Semantic Retrieval did not include it in the top five.
+
+### Findings
+
+- HyDE can help bridge terminology mismatches for individual queries.
+- It performed worse than Semantic Retrieval across all measured metrics in this small experiment.
+- Hypothetical documents may introduce misleading or irrelevant terms.
+- LLM generation substantially increased latency.
+- Generated passages are retrieval aids, not verified scientific evidence.
+
+## 9. Intelligent Query Routing
+
+**Evaluation size:** Four illustrative queries
+
+Used LangGraph with conditional edges to select BM25, Semantic, or Hybrid Retrieval based on an LLM classifier.
+
+| Query type | Strategy | End-to-end latency (ms) |
+|---|---|---:|
+| Explanatory | Semantic | 2512.38 |
+| Factual | Semantic | 1635.74 |
+| Comparison | Semantic | 1836.63 |
+| Multi-hop | Hybrid | 1733.95 |
+
+Average routed latency: 1929.68 ms.
+
+### Findings
+
+- Conditional routing executed successfully.
+- Three queries selected Semantic Retrieval; one selected Hybrid.
+- LLM-based routing adds substantial latency.
+- Routing multi-hop questions to Hybrid Retrieval does not automatically ensure complete evidence coverage.
+- Retrieval-quality improvements attributable to routing were not measured.
+
+## 10. Architectural Decisions
+
+| Technique | Recommendation |
+|---|---|
+| Semantic | Default retrieval strategy |
+| BM25 | Low-latency alternative for suitable queries |
+| Hybrid | Retain as an optional strategy |
+| Query Classification | Use selectively when benefits justify latency |
+| Query Rewriting | Apply conditionally after further validation |
+| Multi-Query | Keep experimental pending fair evaluation |
+| Query Decomposition | Consider for complex multi-part questions |
+| HyDE | Keep optional for demonstrated vocabulary-mismatch cases |
+| Intelligent Routing | Avoid unconditional LLM classification |
+
+These recommendations are specific to the experiments conducted in this project.
+
+## 11. Evaluation Limitations
+
+- SciFact mainly contains short scientific claims, making it less suitable for evaluating genuine multi-hop reasoning.
+- Some advanced techniques were tested using only ten queries.
+- Module 08 used illustrative questions without relevance-judgment evaluation.
+- Multi-Query and Semantic Retrieval had unequal candidate budgets.
+- No statistical significance testing was performed.
+- LLM generation may produce different outputs across runs.
+- Latency comparisons across separate experiments are indicative rather than controlled.
+- LLM token usage and monetary cost were not systematically measured.
+- Retrieval evaluation did not include grounded answer generation.
+
+## 12. Final Takeaway
+
+Advanced retrieval techniques are not universally better.
+
+A relatively simple Semantic Retrieval pipeline achieved the strongest measured overall relevance on the SciFact benchmark.
+
+Complexity should be introduced only when the use case, evaluation dataset, retrieval measurements, and operational constraints justify it.
+
+The architectural goal is not to maximize the number of retrieval techniques. It is to select the simplest approach that meets the system's quality, latency, and cost requirements.
