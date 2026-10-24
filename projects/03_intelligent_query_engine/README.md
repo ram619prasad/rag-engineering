@@ -355,3 +355,147 @@ The results should not be generalized to other datasets or use cases without fur
 - Candidate recall was evaluated, but MRR and nDCG were not calculated for the multi-query union.
 - LLM generation and repeated retrieval increased API overhead and latency.
 - No query-level analysis was conducted to determine which query characteristics benefit most.
+
+---
+
+## Module 06 — Query Decomposition
+
+### Problem
+
+Complex user questions may contain multiple distinct information needs that a single retrieval query does not fully address.
+
+Query decomposition breaks a complex question into smaller, focused subquestions so relevant evidence can be retrieved for each part.
+
+Unlike multi-query retrieval, the objective is not to generate paraphrases but to identify distinct subproblems.
+
+### Implementation
+
+- Implemented `QueryDecomposer` using LangChain's `ChatPromptTemplate` and `ChatOpenAI`.
+- Used Pydantic structured output to represent decomposed questions.
+- Configured decomposition to produce distinct subquestions and avoid unnecessarily splitting simple queries.
+- Reused the existing semantic retriever and persistent ChromaDB index.
+- Retrieved the top three documents for each subquestion.
+- Recorded document IDs and measured overlap between retrieved evidence sets.
+
+### Experiment
+
+**Original question:**
+
+How do inflammatory biomarkers predict COPD exacerbations, and how do exacerbations affect patient survival?
+
+**Subquestion 1:**
+
+How do inflammatory biomarkers predict COPD exacerbations?
+
+Retrieved document IDs:
+- `21287352`
+- `40935722`
+- `29564505`
+
+**Subquestion 2:**
+
+What is the impact of COPD exacerbations on patient survival?
+
+Retrieved document IDs:
+- `19464037`
+- `18988265`
+- `2032877`
+
+### Results
+
+| Measurement | Result |
+|---|---:|
+| Generated subquestions | 2 |
+| Documents retrieved per subquestion | 3 |
+| Total retrieval results | 6 |
+| Unique documents | 6 |
+| Duplicate occurrences | 0 |
+
+### Findings
+
+1. The LLM successfully separated a multi-part question into two distinct information needs.
+2. Each subquestion retrieved a different set of scientific documents.
+3. No document overlap was observed in the six retrieved results.
+4. The experiment demonstrated candidate diversity but did not establish improved retrieval relevance or answer correctness.
+5. Query decomposition can be useful when a question requires evidence addressing multiple distinct topics.
+
+### Challenges and Limitations
+
+- Decomposition introduces an additional LLM call and multiple retrieval operations.
+- Generated subquestions may omit important constraints or change the original intent.
+- Candidate diversity alone does not establish evidence quality.
+- No reference answer or multi-hop relevance judgments were used for this experiment.
+- No final answer synthesis or quantitative improvement comparison was performed.
+- Decomposition may be unnecessary or harmful for simple questions.
+
+### Architectural Decision
+
+Use query decomposition selectively for complex, multi-part questions rather than applying it universally.
+
+Further multi-hop evaluation will be addressed in the Agentic AI learning track using a benchmark selected for that purpose.
+
+---
+
+## Module 07 — HyDE (Hypothetical Document Embeddings)
+
+### Problem
+
+Short or abstract queries may use different terminology from relevant source documents, resulting in poor semantic retrieval.
+
+HyDE attempts to bridge this vocabulary gap by generating a hypothetical relevant document and using its embedding to retrieve real evidence.
+
+### Implementation
+
+- Implemented `HyDERetriever` using LangChain's `ChatPromptTemplate`, `ChatOpenAI`, and `StrOutputParser`.
+- Used `gpt-4o-mini` to generate hypothetical scientific passages.
+- Reused the existing SemanticRetriever, OpenAI embeddings, and persistent ChromaDB index.
+- Used hypothetical passages only for retrieval, not as verified evidence.
+- Evaluated retrieval using `ir-measures` against SciFact qrels.
+- Compared Semantic and HyDE on ten reproducibly sampled queries with random seed 42.
+
+### Notable Successful Example
+
+**Original query:** `0-dimensional biomaterials show inductive properties.`
+
+**Known relevant document:** `31715818` — *New opportunities: the use of nanotechnologies to manipulate and track stem cells.*
+
+- Ordinary Semantic Retrieval: relevant document absent from top five; previously observed at rank 45.
+- HyDE Retrieval: relevant document ranked first.
+
+The generated hypothetical passage introduced concepts related to nanoparticles, stem cells, and tissue regeneration, which may explain its improved alignment with the relevant document.
+
+This is a single-query success, not evidence of consistent improvement.
+
+### Benchmark Results
+
+| Metric | Semantic | HyDE |
+|---|---:|---:|
+| Recall@5 | 0.7000 | 0.6000 |
+| Recall@10 | 0.8000 | 0.7000 |
+| MRR@10 | 0.6343 | 0.5625 |
+| nDCG@10 | 0.6720 | 0.5946 |
+| Average latency | 282.62 ms | 2828.53 ms |
+
+**Evaluation scope:** Ten randomly sampled SciFact test queries using seed 42.
+
+### Findings
+
+1. HyDE can recover relevant documents missed by direct semantic search.
+2. HyDE performed worse across all four retrieval metrics in the sampled benchmark.
+3. Hypothetical documents may introduce terminology that helps retrieval, but may also cause semantic drift.
+4. HyDE introduced approximately 10 times the retrieval latency in this experiment.
+5. Generated hypothetical content must not be treated as factual evidence.
+
+### Limitations
+
+- Only ten queries were evaluated quantitatively.
+- Generated passages were not systematically analyzed for semantic drift.
+- Results may vary with model choice, prompt, and embedding model.
+- The experiment did not establish which query categories reliably benefit from HyDE.
+- HyDE incurs additional LLM generation costs.
+
+### Architectural Decision
+
+Keep HyDE as an optional, specialized retrieval strategy rather than enabling it by default.
+
+The existing Semantic Retriever remains the preferred baseline until further evidence demonstrates a reliable advantage.

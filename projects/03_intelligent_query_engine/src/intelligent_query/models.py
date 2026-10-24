@@ -45,3 +45,14 @@ class QueryClassification(BaseModel):
     reason: str = Field(
         description="Brief explanation for the classification."
     )
+    
+    
+class DecomposedQuery(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    subquestions: list[str] = Field(
+        description=(
+            "Independent, focused questions that collectively "
+            "address the original complex question."
+        )
+    )
