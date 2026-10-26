@@ -1,0 +1,246 @@
+{
+  "name": "engineering_knowledge_base",
+  "version": "1.0",
+  "documents": [
+    {
+      "id": "kubernetes_resource_management",
+      "file": "kubernetes_resource_management.md",
+      "domain": "kubernetes",
+      "source": "https://raw.githubusercontent.com/kubernetes/website/main/content/en/docs/concepts/configuration/manage-resources-containers.md",
+      "sha256": "cbb176ded47da163df33bcf0e643dc38361b19f6dc77a98302320704e20c95ac",
+      "characters": 34571
+    },
+    {
+      "id": "kubernetes_hpa",
+      "file": "kubernetes_hpa.md",
+      "domain": "kubernetes",
+      "source": "https://raw.githubusercontent.com/kubernetes/website/main/content/en/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale.md",
+      "sha256": "7188382cda8faf81610d1cece38767dcb2242b4e13331412a94ca2531ff44aa7",
+      "characters": 34761
+    },
+    {
+      "id": "kubernetes_pod_scheduling",
+      "file": "kubernetes_pod_scheduling.md",
+      "domain": "kubernetes",
+      "source": "https://raw.githubusercontent.com/kubernetes/website/main/content/en/docs/concepts/scheduling-eviction/assign-pod-node.md",
+      "sha256": "c8a9ec85ae5aa20d7f5fc28e6e91e039f6e1f3e53346d426bfd7cc41ccb9c5b2",
+      "characters": 32605
+    },
+    {
+      "id": "kubernetes_services",
+      "file": "kubernetes_services.md",
+      "domain": "kubernetes",
+      "source": "https://raw.githubusercontent.com/kubernetes/website/main/content/en/docs/concepts/services-networking/service.md",
+      "sha256": "6d014ced1fe171abbea82556cecac6601333fe27ffa834aff1c3d5d6246a5398",
+      "characters": 46848
+    },
+    {
+      "id": "kubernetes_persistent_volumes",
+      "file": "kubernetes_persistent_volumes.md",
+      "domain": "kubernetes",
+      "source": "https://raw.githubusercontent.com/kubernetes/website/main/content/en/docs/concepts/storage/persistent-volumes.md",
+      "sha256": "b0da38869bc1cdb5ed19f6424c2ef0fedefb5e10fb3603450f56a6581db90069",
+      "characters": 51238
+    },
+    {
+      "id": "kubernetes_resource_quotas",
+      "file": "kubernetes_resource_quotas.md",
+      "domain": "kubernetes",
+      "source": "https://raw.githubusercontent.com/kubernetes/website/main/content/en/docs/concepts/policy/resource-quotas.md",
+      "sha256": "fe5e925c6e90e61744bb3f5e2d83c5047435fa524ec34a2a8b35c7eea6cab892",
+      "characters": 31078
+    },
+    {
+      "id": "docker_dockerfile",
+      "file": "docker_dockerfile.md",
+      "domain": "docker",
+      "source": "https://raw.githubusercontent.com/docker/docs/main/content/get-started/docker-concepts/building-images/writing-a-dockerfile.md",
+      "sha256": "a6efa2d64ffd4206e824d8483a78bb63953f3555dba83a29880001ddd746dc59",
+      "characters": 6374
+    },
+    {
+      "id": "docker_multistage",
+      "file": "docker_multistage.md",
+      "domain": "docker",
+      "source": "https://raw.githubusercontent.com/docker/docs/main/content/get-started/docker-concepts/building-images/multi-stage-builds.md",
+      "sha256": "6604e6b27b00e3fe741ef53315d867d0801e8bdbcb820013fb4f664e81ca682c",
+      "characters": 14664
+    },
+    {
+      "id": "prometheus_data_model",
+      "file": "prometheus_data_model.md",
+      "domain": "prometheus",
+      "source": "https://raw.githubusercontent.com/prometheus/docs/main/docs/concepts/data_model.md",
+      "sha256": "03d8b2c8441c12daadad073fbc5ed527d3e36030d39fa62dfa17368ff701d6d2",
+      "characters": 3643
+    },
+    {
+      "id": "prometheus_metric_types",
+      "file": "prometheus_metric_types.md",
+      "domain": "prometheus",
+      "source": "https://raw.githubusercontent.com/prometheus/docs/main/docs/concepts/metric_types.md",
+      "sha256": "6cd936ac134836d2b4786b98675520ca364081839a5a083a4e7b427808b3be62",
+      "characters": 9551
+    },
+    {
+      "id": "prometheus_instrumentation",
+      "file": "prometheus_instrumentation.md",
+      "domain": "prometheus",
+      "source": "https://raw.githubusercontent.com/prometheus/docs/main/docs/practices/instrumentation.md",
+      "sha256": "8f7f26690b5b1d590729183acbbae519786a958986bd76c2ba236ca9d4a35dfb",
+      "characters": 12028
+    },
+    {
+      "id": "prometheus_histograms",
+      "file": "prometheus_histograms.md",
+      "domain": "prometheus",
+      "source": "https://raw.githubusercontent.com/prometheus/docs/main/docs/practices/histograms.md",
+      "sha256": "ebe64305d7d6156ca6b7021604c84eb5eab1868f35510089670ffe6fe387dcd2",
+      "characters": 32166
+    },
+    {
+      "id": "distributed_retry",
+      "file": "distributed_retry.md",
+      "domain": "distributed",
+      "source": "https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/main/docs/patterns/retry-content.md",
+      "sha256": "619b34a5b1eaf6508715080192feb9fcd85447d402f29816e9f3ffaf294f91a8",
+      "characters": 12141
+    },
+    {
+      "id": "distributed_circuit_breaker",
+      "file": "distributed_circuit_breaker.md",
+      "domain": "distributed",
+      "source": "https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/main/docs/patterns/circuit-breaker.md",
+      "sha256": "29baeab9e19c54c9fdae01dfa4c431bae0c6811e0c5267a1d6c8c78267b8146e",
+      "characters": 25769
+    },
+    {
+      "id": "distributed_saga",
+      "file": "distributed_saga.md",
+      "domain": "distributed",
+      "source": "https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/main/docs/patterns/saga-content.md",
+      "sha256": "412420662526a50fa0201ea4355dca267d954d8b1a8670b41a86eb994c5ed904",
+      "characters": 11073
+    },
+    {
+      "id": "distributed_idempotent_consumer",
+      "file": "distributed_idempotent_consumer.md",
+      "domain": "distributed",
+      "source": "https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/main/docs/patterns/idempotent-consumer.md",
+      "sha256": "c4650525eb0380f519ada5e18793ef474b466bac66f91672a5072ce4ed4e153d",
+      "characters": 19616
+    },
+    {
+      "id": "distributed_queue_load_leveling",
+      "file": "distributed_queue_load_leveling.md",
+      "domain": "distributed",
+      "source": "https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/main/docs/patterns/queue-based-load-leveling.md",
+      "sha256": "9ce566aa87c58aa74c6af4e42ffd2d61e40e893164e72b33139923946211d9f0",
+      "characters": 14108
+    },
+    {
+      "id": "microservices_gateway_routing",
+      "file": "microservices_gateway_routing.md",
+      "domain": "microservices",
+      "source": "https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/main/docs/patterns/gateway-routing-content.md",
+      "sha256": "7fc602f8a7270f90fd993f9403e570e5f5adc176fe7d0dad1fec24233f72d7ab",
+      "characters": 9952
+    },
+    {
+      "id": "microservices_gateway_aggregation",
+      "file": "microservices_gateway_aggregation.md",
+      "domain": "microservices",
+      "source": "https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/main/docs/patterns/gateway-aggregation.md",
+      "sha256": "20dcfa9f8e4c38c202fc1b7b2c09bd5700d1d5c0e0829c3a6dc1e55756e4b1e5",
+      "characters": 13642
+    },
+    {
+      "id": "microservices_sidecar",
+      "file": "microservices_sidecar.md",
+      "domain": "microservices",
+      "source": "https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/main/docs/patterns/sidecar.md",
+      "sha256": "aeaaa3ee2f26b369252e61bc9f663dadd22e9cd2a840f85b4369bd2a3dec3891",
+      "characters": 10948
+    },
+    {
+      "id": "microservices_strangler_fig",
+      "file": "microservices_strangler_fig.md",
+      "domain": "microservices",
+      "source": "https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/main/docs/patterns/strangler-fig.md",
+      "sha256": "433101cd85942a5c3e9fb410d8fdf53d5c10e50851d3821caebf56db0954bb51",
+      "characters": 14908
+    },
+    {
+      "id": "postgres_indexes",
+      "file": "postgres_indexes.md",
+      "domain": "postgres",
+      "source": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/postgres/indexes.mdx",
+      "sha256": "0ad8593a6ae145f2bc28fc61aca5ef778abded38854cf94afe45f90186c082db",
+      "characters": 5693
+    },
+    {
+      "id": "postgres_replication",
+      "file": "postgres_replication.md",
+      "domain": "postgres",
+      "source": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/replication.mdx",
+      "sha256": "afadc4095e47fcb75b3c9edb5c79e7ea9374d339673f8256616664d4d5eedd70",
+      "characters": 7828
+    },
+    {
+      "id": "postgres_connection_pooling",
+      "file": "postgres_connection_pooling.md",
+      "domain": "postgres",
+      "source": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/connecting-to-postgres/pooling-and-limits.mdx",
+      "sha256": "9eb5e0baf904ee00d6212fb5ac087395a196f5643e7cbecee170b243757f91f2",
+      "characters": 8021
+    },
+    {
+      "id": "postgres_connection_management",
+      "file": "postgres_connection_management.md",
+      "domain": "postgres",
+      "source": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/connection-management.mdx",
+      "sha256": "0f1e6908d7cba88dba804a59b8380ea1bc58bb7de9616f54f410b9e963790b2e",
+      "characters": 13594
+    },
+    {
+      "id": "postgres_index_advisor",
+      "file": "postgres_index_advisor.md",
+      "domain": "postgres",
+      "source": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/extensions/index_advisor.mdx",
+      "sha256": "d0e01e87a524a2bf2e997ac11c11010a3be719a7b52a92b8aa56fb57bb725676",
+      "characters": 5071
+    },
+    {
+      "id": "caching_cache_aside",
+      "file": "caching_cache_aside.md",
+      "domain": "caching",
+      "source": "https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/main/docs/patterns/cache-aside-content.md",
+      "sha256": "eb19852e710d924d98a39f386928ef1b0d763391f0e9e22a353ce818dd57881f",
+      "characters": 14318
+    },
+    {
+      "id": "caching_eviction",
+      "file": "caching_eviction.md",
+      "domain": "caching",
+      "source": "https://raw.githubusercontent.com/valkey-io/valkey-doc/main/topics/lru-cache.md",
+      "sha256": "3fa5c305be28d9618dea9822eac5ddcbff6b5bf4f9cb220a00386e8ca410118e",
+      "characters": 13606
+    },
+    {
+      "id": "caching_monitoring",
+      "file": "caching_monitoring.md",
+      "domain": "caching",
+      "source": "https://raw.githubusercontent.com/valkey-io/valkey-doc/main/commands/info.md",
+      "sha256": "47ba1147419c3ecde5eb537bf69add8146a94fda7dc0b7b49aa5e1bc456748e1",
+      "characters": 40697
+    },
+    {
+      "id": "caching_pipelining",
+      "file": "caching_pipelining.md",
+      "domain": "caching",
+      "source": "https://raw.githubusercontent.com/valkey-io/valkey-doc/main/topics/pipelining.md",
+      "sha256": "dac8667eb4034de4cb18d3d02de81ede4fb3a46b51a8ac18f4f8636bebbb9f96",
+      "characters": 7999
+    }
+  ]
+}

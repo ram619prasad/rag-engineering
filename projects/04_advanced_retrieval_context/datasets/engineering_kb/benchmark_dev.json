@@ -1,0 +1,70 @@
+
+{
+  "name": "engineering_kb_dev",
+  "version": "1.0",
+  "questions": [
+    {
+      "question_id": "q001",
+      "question": "How does the Cache-Aside pattern handle a cache miss?",
+      "question_type": "factual",
+      "relevant_section_ids": ["caching_cache_aside:s002"]
+    },
+    {
+      "question_id": "q002",
+      "question": "What is the difference between LRU and LFU cache eviction?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "caching_eviction:s006",
+        "caching_eviction:s007"
+      ]
+    },
+    {
+      "question_id": "q003",
+      "question": "Why can a long cache expiration period result in stale data?",
+      "question_type": "factual",
+      "relevant_section_ids": ["caching_cache_aside:s003"]
+    },
+    {
+      "question_id": "q004",
+      "question": "When should the Cache-Aside pattern be avoided?",
+      "question_type": "factual",
+      "relevant_section_ids": ["caching_cache_aside:s004"]
+    },
+    {
+      "question_id": "q005",
+      "question": "Why should an application update the database before invalidating the cache?",
+      "question_type": "factual",
+      "relevant_section_ids": ["caching_cache_aside:s006"]
+    },
+    {
+      "question_id": "q006",
+      "question": "Which Valkey eviction policies can remove keys regardless of whether they have a TTL?",
+      "question_type": "factual",
+      "relevant_section_ids": ["caching_eviction:s003"]
+    },
+    {
+      "question_id": "q007",
+      "question": "How does Valkey determine when to trigger key eviction using memory metrics?",
+      "question_type": "factual",
+      "relevant_section_ids": ["caching_eviction:s005"]
+    },
+    {
+      "question_id": "q008",
+      "question": "Why does Valkey approximate LRU instead of tracking exact least-recently-used ordering?",
+      "question_type": "factual",
+      "relevant_section_ids": ["caching_eviction:s006"]
+    },
+    {
+      "question_id": "q009",
+      "question": "How does Valkey's LFU mode account for changes in key access frequency over time?",
+      "question_type": "factual",
+      "relevant_section_ids": ["caching_eviction:s007"]
+    },
+    {
+      "question_id": "q010",
+      "question": "How do replication and AOF buffers affect Valkey maxmemory configuration?",
+      "question_type": "factual",
+      "relevant_section_ids": ["caching_eviction:s002"]
+    }
+  ]
+}

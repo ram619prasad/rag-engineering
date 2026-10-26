@@ -1,0 +1,14 @@
+
+[project]
+name = "advanced-retrieval-context"
+version = "0.1.0"
+description = "Advanced retrieval and context engineering experiments"
+requires-python = ">=3.13"
+dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "advanced_retrieval"

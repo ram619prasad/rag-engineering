@@ -1,0 +1,1152 @@
+{
+  "questions": [
+    {
+      "question": "How does Valkey's approximated LRU algorithm compare to the LFU eviction mode in terms of eviction candidate selection, tunability, and resource consumption, and what configuration options are available to optimize each algorithm's performance for different access patterns?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "caching_eviction:s006",
+        "caching_eviction:s007"
+      ]
+    },
+    {
+      "question": "When is the cache-aside pattern unsuitable due to data sensitivity or shared cache environments?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "caching_cache_aside:s004"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0002"
+    },
+    {
+      "question": "How should a retry policy adjust retry intervals based on exception types in distributed service requests?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "distributed_retry:s007"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0003"
+    },
+    {
+      "question": "What Docker command runs the Spring Boot application container exposing port 8080?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "docker_multistage:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0004"
+    },
+    {
+      "question": "How does Kubernetes update EndpointSlices for a Service during Pod set changes?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "kubernetes_services:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0005"
+    },
+    {
+      "question": "How does Azure Kubernetes Service (AKS) utilize the Sidecar pattern in its Istio-based service mesh feature?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "microservices_sidecar:s007"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0006"
+    },
+    {
+      "question": "What are the differences in latency and IP protocol support between Supavisor and PgBouncer connection poolers in Supabase?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "postgres_connection_pooling:s003"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0007"
+    },
+    {
+      "question": "How are time series identified using metric names and labels in Prometheus notation?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "prometheus_data_model:s003"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0008"
+    },
+    {
+      "question": "What strategy should applications implement to keep cached data consistent with the data store and handle stale data?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "caching_cache_aside:s001"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0009"
+    },
+    {
+      "question": "What are two common storage options for processed keys in a distributed idempotent consumer?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "distributed_idempotent_consumer:s004"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0010"
+    },
+    {
+      "question": "What tool does Docker provide to generate an optimized Dockerfile by analyzing your project's code and framework?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "docker_dockerfile:s006"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0011"
+    },
+    {
+      "question": "How do you specify the dataSource field when creating a PersistentVolumeClaim from an existing PVC in Kubernetes?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s052"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0012"
+    },
+    {
+      "question": "What are the primary functions handled by a sidecar proxy in a service mesh data plane deployment?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "microservices_sidecar:s006"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0013"
+    },
+    {
+      "question": "How can you query up-to-the-second active PostgreSQL connections by application and user in Supabase?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "postgres_connection_pooling:s006"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0014"
+    },
+    {
+      "question": "What metric types are recommended for exporting collection duration and error count in custom Prometheus collectors?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "prometheus_instrumentation:s012"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0015"
+    },
+    {
+      "question": "How should the maxmemory setting be adjusted for Valkey instances using replication to account for replication and AOF buffers?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "caching_eviction:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0016"
+    },
+    {
+      "question": "What are the main drawbacks of the choreography approach in saga implementation regarding workflow complexity and testing?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "distributed_saga:s006"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0017"
+    },
+    {
+      "question": "What are the typical steps followed in a Dockerfile to build a Node.js application image?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "docker_dockerfile:s003"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0018"
+    },
+    {
+      "question": "What are the two supported volumeModes for Kubernetes PersistentVolumes and their default behavior?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s023"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0019"
+    },
+    {
+      "question": "What processes are used to migrate and synchronize domain data from a monolithic database to isolated domain databases in the Strangler Fig pattern?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "microservices_strangler_fig:s006"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0020"
+    },
+    {
+      "question": "What indexes does the index_advisor recommend for optimizing a query joining book, publisher, author, and review tables with filters on author.id and publisher.id?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "postgres_index_advisor:s003"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0021"
+    },
+    {
+      "question": "What are the two fundamental approaches Prometheus uses to represent distributions of observed values in metrics?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "prometheus_histograms:s001"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0022"
+    },
+    {
+      "question": "What is the default memory limit behavior for 64-bit systems when the maxmemory directive is set to zero in Valkey?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "caching_eviction:s001"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0023"
+    },
+    {
+      "question": "What are the four ACID principles that transactions must adhere to in a single service database?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "distributed_saga:s001"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0024"
+    },
+    {
+      "question": "What is the size difference between the final multi-stage Docker image and the original build image as shown by the docker images command?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "docker_multistage:s006"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0025"
+    },
+    {
+      "question": "What resource names are used to set local ephemeral storage quotas in Kubernetes namespaces?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s008"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0026"
+    },
+    {
+      "question": "When is the microservices gateway aggregation pattern recommended for use in client-backend communication?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "microservices_gateway_aggregation:s004"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0027"
+    },
+    {
+      "question": "What is the purpose of the Write-Ahead Log (WAL) in Postgres replication?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "postgres_replication:s008"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0028"
+    },
+    {
+      "question": "How do you calculate the average request duration over the last 5 minutes from a native histogram in PromQL?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "prometheus_histograms:s004"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0029"
+    },
+    {
+      "question": "How does pipelining improve the number of operations per second in a Valkey server compared to non-pipelined command serving?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "caching_pipelining:s003"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0030"
+    },
+    {
+      "question": "What role do pivot transactions play in the Saga pattern regarding compensable and retryable transactions?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "distributed_saga:s004"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0031"
+    },
+    {
+      "question": "What base image is specified in the Dockerfile for building the Spring Boot application?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "docker_multistage:s003"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0032"
+    },
+    {
+      "question": "How does the Kubernetes scheduler ensure a Pod is placed on a node with sufficient CPU and memory capacity?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "kubernetes_resource_management:s010"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0033"
+    },
+    {
+      "question": "How does the gateway aggregation pattern reduce chattiness between clients and microservices?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "microservices_gateway_aggregation:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0034"
+    },
+    {
+      "question": "How can you identify sessions blocked by others in Postgres using pg_stat_activity and pg_blocking_pids()?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "postgres_connection_management:s008"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0035"
+    },
+    {
+      "question": "What type of Prometheus metric represents a single numerical value that can increase or decrease arbitrarily?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "prometheus_metric_types:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0036"
+    },
+    {
+      "question": "What cache eviction policy is commonly used when the cache exceeds its size limit in the Cache-Aside pattern?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "caching_cache_aside:s003"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0037"
+    },
+    {
+      "question": "Why is idempotency important when implementing retry logic in distributed systems?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "distributed_retry:s006"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0038"
+    },
+    {
+      "question": "What Dockerfile instruction sets the default command a container using the image will run?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "docker_dockerfile:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0039"
+    },
+    {
+      "question": "What is the simplest recommended form of node selection constraint in Kubernetes pod scheduling?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "kubernetes_pod_scheduling:s003"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0040"
+    },
+    {
+      "question": "When is it appropriate to use a gateway routing pattern to simplify client applications in microservices architecture?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "microservices_gateway_routing:s007"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0041"
+    },
+    {
+      "question": "What determines the maximum number of client connections a pooler can accept simultaneously in Postgres connection pooling?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "postgres_connection_pooling:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0042"
+    },
+    {
+      "question": "What is the rule of thumb for choosing between a counter and a gauge metric type in Prometheus instrumentation?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "prometheus_instrumentation:s016"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0043"
+    },
+    {
+      "question": "How is the memory usage threshold for triggering key eviction calculated using INFO MEMORY fields in Valkey?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "caching_eviction:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0044"
+    },
+    {
+      "question": "How does the Queue-Based Load Leveling pattern enhance reliability in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "distributed_queue_load_leveling:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0045"
+    },
+    {
+      "question": "What Java package and Spring annotations are used in the SpringBootDockerApplication.java to create a RESTful web service responding with \"Hello World\"?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "docker_multistage:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0046"
+    },
+    {
+      "question": "What is the effect of setting .spec.clusterIP to \"None\" in a Kubernetes Service definition?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "kubernetes_services:s029"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0047"
+    },
+    {
+      "question": "How does the gateway routing pattern support managing multiple versions of the same microservice during deployments?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "microservices_gateway_routing:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0048"
+    },
+    {
+      "question": "What connection types are displayed in the Supabase Dashboard's Database client connections chart for monitoring Postgres usage?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "postgres_connection_management:s003"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0049"
+    },
+    {
+      "question": "How do most Prometheus client libraries handle metrics with no labels to avoid missing time series?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "prometheus_instrumentation:s019"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0050"
+    },
+    {
+      "question": "How does the Cache-Aside pattern handle cache misses when retrieving data?",
+      "question_type": "factual",
+      "relevant_section_ids": [
+        "caching_cache_aside:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0051"
+    },
+    {
+      "question": "How do Best Effort and Not-best-effort Pod quota scopes differ in tracking Kubernetes Pod resource consumption based on QoS classes?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s015",
+        "kubernetes_resource_quotas:s016"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0052"
+    },
+    {
+      "question": "How does PriorityClass scope ResourceQuota differ from default PriorityClass consumption limiting in Kubernetes namespaces?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s020",
+        "kubernetes_resource_quotas:s022"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0053"
+    },
+    {
+      "question": "How does ResourceQuota with PriorityClass scope compare to unscoped ResourceQuota in controlling pod resource consumption based on pod priority?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s020",
+        "kubernetes_resource_quotas:s021"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0054"
+    },
+    {
+      "question": "What are the differences between manual recovery by cluster administrators and retrying expansion with a smaller size when recovering from PVC expansion failures in Kubernetes?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s015",
+        "kubernetes_persistent_volumes:s019"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0055"
+    },
+    {
+      "question": "How do the 'Retain' and 'Delete' reclaim policies differ in handling PersistentVolume lifecycle and external storage asset management?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s009",
+        "kubernetes_persistent_volumes:s011"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0056"
+    },
+    {
+      "question": "What are the differences between creating a PersistentVolumeClaim from a VolumeSnapshot versus cloning from an existing PersistentVolumeClaim in Kubernetes?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s050",
+        "kubernetes_persistent_volumes:s052"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0057"
+    },
+    {
+      "question": "How does specifying volumeMode as Block in PersistentVolumeClaim affect binding compared to unspecified volumeMode for raw block volumes in Kubernetes?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s047",
+        "kubernetes_persistent_volumes:s048"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0058"
+    },
+    {
+      "question": "How do Best Effort Pods scope and Non-terminating Pods scope differ in Kubernetes ResourceQuota tracking criteria?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s015",
+        "kubernetes_resource_quotas:s017"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0059"
+    },
+    {
+      "question": "How do binding rules differ between raw block volumes and filesystem volumes in Kubernetes PersistentVolumeClaims?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s045",
+        "kubernetes_persistent_volumes:s048"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0060"
+    },
+    {
+      "question": "How does specifying a raw block device path in a Pod's volumeDevices differ from using a mount path for file system volumes in Kubernetes?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s045",
+        "kubernetes_persistent_volumes:s047"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0061"
+    },
+    {
+      "question": "How do matchLabelKeys and mismatchLabelKeys differ in their use for Pod affinity and anti-affinity in Kubernetes scheduling?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_pod_scheduling:s014",
+        "kubernetes_pod_scheduling:s015"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0062"
+    },
+    {
+      "question": "How do PersistentVolumes and PersistentVolumeClaims differ in specifying storage capacity and access modes in Kubernetes?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s021",
+        "kubernetes_persistent_volumes:s032"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0063"
+    },
+    {
+      "question": "How do counters and gauges differ in handling metric values that can decrease over time?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "prometheus_metric_types:s001",
+        "prometheus_metric_types:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0064"
+    },
+    {
+      "question": "How do choreography and orchestration approaches differ in handling workflow complexity and failure points in saga implementations?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "distributed_saga:s006",
+        "distributed_saga:s007"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0065"
+    },
+    {
+      "question": "How do considerations for message durability and idempotent consumer design compare with the need to redesign application logic for asynchronous messaging in implementing distributed queue load leveling?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "distributed_queue_load_leveling:s003",
+        "distributed_queue_load_leveling:s007"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0066"
+    },
+    {
+      "question": "How do the Non-terminating Pods and Terminating Pods quota scopes differ in tracking Pod resource consumption based on the .spec.activeDeadlineSeconds field?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s017",
+        "kubernetes_resource_quotas:s018"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0067"
+    },
+    {
+      "question": "How do in-place resizing of container resources and resizing memory-backed emptyDir volumes differ in terms of Pod restarts and resource management considerations?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_management:s013",
+        "kubernetes_resource_management:s016"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0068"
+    },
+    {
+      "question": "How does automatic binding of PersistentVolumeClaims to PersistentVolumes differ from pre-binding and reserving a PersistentVolume in Kubernetes?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s006",
+        "kubernetes_persistent_volumes:s014"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0069"
+    },
+    {
+      "question": "How do PriorityClass and VolumeAttributesClass quota scopes differ in the types of Kubernetes resources they track and limit?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s020",
+        "kubernetes_resource_quotas:s023"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0070"
+    },
+    {
+      "question": "How does placing a queue between tasks and a service improve scalability and availability compared to direct concurrent requests to a data store?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "distributed_queue_load_leveling:s002",
+        "distributed_queue_load_leveling:s006"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0071"
+    },
+    {
+      "question": "How does specifying resource requests and limits at the Pod level improve resource utilization compared to setting them only at the container level?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_management:s005",
+        "kubernetes_resource_management:s009"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0072"
+    },
+    {
+      "question": "How does specifying your own IP address in a ClusterIP Service compare to specifying your own port in a NodePort Service regarding collision management?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_services:s015",
+        "kubernetes_services:s017"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0073"
+    },
+    {
+      "question": "How does using a gateway to aggregate requests improve performance compared to clients making multiple direct calls to back-end services in microservices architectures?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "microservices_gateway_aggregation:s001",
+        "microservices_gateway_aggregation:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0074"
+    },
+    {
+      "question": "How does specifying a custom NodePort in a NodePort Service compare to the automatic port allocation and external IP assignment in a LoadBalancer Service?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_services:s017",
+        "kubernetes_services:s021"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0075"
+    },
+    {
+      "question": "How do in-place Pod vertical scaling and resizing by launching replacement Pods differ in updating container resource requests and limits in Kubernetes?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_management:s013",
+        "kubernetes_resource_management:s014"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0076"
+    },
+    {
+      "question": "How do Kubernetes enforce CPU and memory limits differently at the kernel level using cgroups?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_management:s001",
+        "kubernetes_resource_management:s011"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0077"
+    },
+    {
+      "question": "How does node affinity weighting differ from pod affinity's required and preferred scheduling rules in Kubernetes pod scheduling?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_pod_scheduling:s006",
+        "kubernetes_pod_scheduling:s012"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0078"
+    },
+    {
+      "question": "How do the general quota scopes and the CrossNamespacePodAffinity scope differ in controlling pod scheduling constraints across namespaces in Kubernetes?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s014",
+        "kubernetes_resource_quotas:s019"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0079"
+    },
+    {
+      "question": "How does specifying a custom NodePort compare to using the default allocated port in Kubernetes NodePort Services regarding port collision management?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_services:s016",
+        "kubernetes_services:s017"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0080"
+    },
+    {
+      "question": "How do resource quotas for compute resources differ from those for storage in Kubernetes namespaces?",
+      "question_type": "comparison",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s004",
+        "kubernetes_resource_quotas:s007"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0081"
+    },
+    {
+      "question": "How do matchLabelKeys and mismatchLabelKeys fields differ in controlling Pod scheduling affinity and anti-affinity in Kubernetes?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_pod_scheduling:s014",
+        "kubernetes_pod_scheduling:s015"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0082"
+    },
+    {
+      "question": "How do the accessModes and storageClassName fields in PersistentVolume and PersistentVolumeClaim specs ensure compatibility for volume binding in Kubernetes?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s021",
+        "kubernetes_persistent_volumes:s032"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0083"
+    },
+    {
+      "question": "How do counters and gauges differ in representing metric values that can increase or decrease, and what are typical use cases for each?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "prometheus_metric_types:s001",
+        "prometheus_metric_types:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0084"
+    },
+    {
+      "question": "How do choreography and orchestration approaches differ in handling coordination and failure points in distributed saga implementations?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "distributed_saga:s006",
+        "distributed_saga:s007"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0085"
+    },
+    {
+      "question": "How should application logic be adapted for asynchronous messaging and background jobs when implementing distributed queue load leveling in Azure?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "distributed_queue_load_leveling:s003",
+        "distributed_queue_load_leveling:s007"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0086"
+    },
+    {
+      "question": "How do the Non-terminating and Terminating Pods quota scopes differ in identifying Pods based on the .spec.activeDeadlineSeconds field and managing resource quotas?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s017",
+        "kubernetes_resource_quotas:s018"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0087"
+    },
+    {
+      "question": "How does enabling in-place Pod vertical scaling affect resizing memory-backed emptyDir volumes without restarting containers?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_resource_management:s013",
+        "kubernetes_resource_management:s016"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0088"
+    },
+    {
+      "question": "How does pre-binding a PersistentVolumeClaim to a specific PersistentVolume affect the control plane's binding process and exclusivity of the binding?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s006",
+        "kubernetes_persistent_volumes:s014"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0089"
+    },
+    {
+      "question": "How do ResourceQuota scopeSelectors differ in controlling resource consumption for Pods with PriorityClass versus PersistentVolumeClaims with VolumeAttributesClass?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s020",
+        "kubernetes_resource_quotas:s023"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0090"
+    },
+    {
+      "question": "How does placing a queue between tasks and a service help prevent data store timeouts caused by concurrent web app instances?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "distributed_queue_load_leveling:s002",
+        "distributed_queue_load_leveling:s006"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0091"
+    },
+    {
+      "question": "How does enabling the PodLevelResources feature gate affect resource requests and limits specification for CPU and memory at the Pod and container levels?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_resource_management:s005",
+        "kubernetes_resource_management:s009"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0092"
+    },
+    {
+      "question": "How do the YAML specifications differ when creating a PersistentVolumeClaim from a VolumeSnapshot versus from an existing PersistentVolumeClaim in Kubernetes?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s050",
+        "kubernetes_persistent_volumes:s052"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0093"
+    },
+    {
+      "question": "How do you specify a custom IP address for a ClusterIP service and a custom port for a NodePort service in Kubernetes, and what validations are performed by the API server?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_services:s015",
+        "kubernetes_services:s017"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0094"
+    },
+    {
+      "question": "How does using a gateway reduce client-to-service chattiness and improve performance in microservices architectures with multiple back-end calls?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "microservices_gateway_aggregation:s001",
+        "microservices_gateway_aggregation:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0095"
+    },
+    {
+      "question": "How do the quota scopes for best effort Pods and not-best-effort Pods differ in terms of the QoS classes they track and the required operator for scopeSelector?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s015",
+        "kubernetes_resource_quotas:s016"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0096"
+    },
+    {
+      "question": "How does specifying a custom nodePort in a NodePort Service relate to the external load balancer configuration in a LoadBalancer Service?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_services:s017",
+        "kubernetes_services:s021"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0097"
+    },
+    {
+      "question": "How do in-place Pod vertical scaling and resizing by launching replacement Pods differ in updating container resource requests and limits?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_resource_management:s013",
+        "kubernetes_resource_management:s014"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0098"
+    },
+    {
+      "question": "How do Kubernetes and the Linux kernel enforce CPU and memory limits differently for containers using cgroups?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_resource_management:s001",
+        "kubernetes_resource_management:s011"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0099"
+    },
+    {
+      "question": "How do node affinity weights influence scheduling decisions compared to pod affinity rules with required and preferred scheduling constraints?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_pod_scheduling:s006",
+        "kubernetes_pod_scheduling:s012"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0100"
+    },
+    {
+      "question": "How does the CrossNamespacePodAffinity quota scope use scopeSelector matchExpressions to restrict pods with cross-namespace affinity terms in specific namespaces?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s014",
+        "kubernetes_resource_quotas:s019"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0101"
+    },
+    {
+      "question": "How does Kubernetes handle port allocation for a NodePort Service, and what must you consider when specifying a custom nodePort value?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_services:s016",
+        "kubernetes_services:s017"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0102"
+    },
+    {
+      "question": "How do resource quotas limit CPU and memory requests across pods and storage requests across persistent volume claims in a Kubernetes namespace?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_resource_quotas:s004",
+        "kubernetes_resource_quotas:s007"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0103"
+    },
+    {
+      "question": "How do the PersistentVolumeClaim specifications differ when creating from a VolumeSnapshot versus using a volume populator with dataSourceRef?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_persistent_volumes:s050",
+        "kubernetes_persistent_volumes:s053"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0104"
+    },
+    {
+      "question": "How do Kubernetes Services use named ports to support multiple protocols and allow flexible backend port changes without breaking clients?",
+      "question_type": "multi_section",
+      "relevant_section_ids": [
+        "kubernetes_services:s004",
+        "kubernetes_services:s012"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0105"
+    },
+    {
+      "question": "How do the Circuit Breaker and Idempotent Consumer patterns each support reliability goals in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "distributed_circuit_breaker:s005",
+        "distributed_idempotent_consumer:s011"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0106"
+    },
+    {
+      "question": "How do the Circuit Breaker and Queue-Based Load Leveling patterns each support reliability and performance efficiency in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "distributed_circuit_breaker:s005",
+        "distributed_queue_load_leveling:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0107"
+    },
+    {
+      "question": "How do the Idempotent Consumer and Queue-Based Load Leveling patterns each support reliability in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "distributed_idempotent_consumer:s011",
+        "distributed_queue_load_leveling:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0108"
+    },
+    {
+      "question": "How do the Gateway Aggregation and Strangler Fig patterns each support operational excellence and reliability in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "microservices_gateway_aggregation:s005",
+        "microservices_strangler_fig:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0109"
+    },
+    {
+      "question": "How do the Queue-Based Load Leveling and Retry patterns each support reliability goals in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "distributed_queue_load_leveling:s005",
+        "distributed_retry:s011"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0110"
+    },
+    {
+      "question": "How do Gateway Aggregation and Gateway Routing patterns each support reliability and operational excellence in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "microservices_gateway_aggregation:s005",
+        "microservices_gateway_routing:s008"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0111"
+    },
+    {
+      "question": "How do the Idempotent Consumer and Retry patterns each support reliability goals in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "distributed_idempotent_consumer:s011",
+        "distributed_retry:s011"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0112"
+    },
+    {
+      "question": "How do the Circuit Breaker and Retry patterns each support reliability and performance efficiency in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "distributed_circuit_breaker:s005",
+        "distributed_retry:s011"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0113"
+    },
+    {
+      "question": "How do the Gateway Routing and Strangler Fig patterns each support operational excellence and reliability in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "microservices_gateway_routing:s008",
+        "microservices_strangler_fig:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0114"
+    },
+    {
+      "question": "How do both microservices gateway aggregation and routing patterns address the risk of the gateway becoming a single point of failure and bottleneck?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "microservices_gateway_aggregation:s003",
+        "microservices_gateway_routing:s006"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0115"
+    },
+    {
+      "question": "How do the Gateway Aggregation and Sidecar patterns each support security and operational excellence in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "microservices_gateway_aggregation:s005",
+        "microservices_sidecar:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0116"
+    },
+    {
+      "question": "How do the Sidecar and Strangler Fig patterns support Operational Excellence in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "microservices_sidecar:s005",
+        "microservices_strangler_fig:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0117"
+    },
+    {
+      "question": "How do the Gateway Routing and Sidecar patterns each support Operational Excellence and Performance Efficiency in workload design according to the Azure Well-Architected Framework?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "microservices_gateway_routing:s008",
+        "microservices_sidecar:s005"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0118"
+    },
+    {
+      "question": "How do distributed circuit breakers and retry patterns together help manage transient faults and prevent resource exhaustion in cloud applications?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "distributed_circuit_breaker:s001",
+        "distributed_retry:s001"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0119"
+    },
+    {
+      "question": "How do the Sidecar and Strangler Fig patterns respectively support incremental modernization and language-independent extensibility in microservices architecture?",
+      "question_type": "cross_document",
+      "relevant_section_ids": [
+        "microservices_sidecar:s002",
+        "microservices_strangler_fig:s002"
+      ],
+      "status": "needs_review",
+      "question_id": "candidate_0120"
+    }
+  ]
+}
