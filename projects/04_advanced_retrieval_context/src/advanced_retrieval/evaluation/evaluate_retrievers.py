@@ -2,7 +2,7 @@
 import json
 
 import ir_measures
-from ir_measures import R, RR
+from ir_measures import R, RR, Qrel, ScoredDoc, calc_aggregate
 
 from advanced_retrieval.retrievers.bm25_retriever import (
     BM25Retriever,
@@ -14,117 +14,59 @@ from advanced_retrieval.retrievers.semantic_retriever import (
 from advanced_retrieval.retrievers.hybrid_retriever import (
     create_hybrid_retriever,
 )
+from advanced_retrieval.retrievers.contextual_retriever import (
+    load_contextual_sections,
+    CHROMA_DIR,
+)
 
 
 BENCHMARK_PATH = (
     CATALOG_PATH.parent / "benchmark_dev_generated.json"
 )
 
-METRICS = [
-    R @ 5,
-    R @ 10,
-    RR @ 10,
-]
+METRICS = [R @ 5, R @ 10, RR @ 10]
 
 
-def evaluate(
-    retriever,
-    questions: list[dict],
-) -> dict:
+def evaluate(retriever, questions: list[dict]) -> dict:
     qrels = []
     run = []
 
     for question in questions:
         question_id = question["question_id"]
 
-        # Ground-truth relevant sections
         for section_id in question["relevant_section_ids"]:
             qrels.append(
-                ir_measures.Qrel(
+                Qrel(
                     query_id=question_id,
                     doc_id=section_id,
                     relevance=1,
                 )
             )
 
-        # Retrieve top 10 sections
-        results = retriever.invoke(question["question"])[:10]
+        documents = retriever.invoke(question["question"])[:10]
 
-        for rank, document in enumerate(results, start=1):
+        for rank, document in enumerate(documents, start=1):
             run.append(
-                ir_measures.ScoredDoc(
+                ScoredDoc(
                     query_id=question_id,
                     doc_id=document.metadata["section_id"],
                     score=float(11 - rank),
                 )
             )
 
-    return ir_measures.calc_aggregate(
+    return calc_aggregate(
         METRICS,
         qrels,
         run,
     )
-    
 
 
-def analyze_retrieval_failure(
+def _evaluate_baseline(
+    sections: list[dict],
     questions: list[dict],
-    semantic: SemanticRetriever,
-    hybrid,
-):
-    for question in questions:
-        query = question["question"]
-        relevant = set(question["relevant_section_ids"])
+) -> dict:
+    print("\n=== BASELINE RETRIEVAL ===")
 
-        semantic_results = semantic.invoke(query)[:10]
-        hybrid_results = hybrid.invoke(query)[:10]
-
-        semantic_ids = [
-            doc.metadata["section_id"]
-            for doc in semantic_results
-        ]
-
-        hybrid_ids = [
-            doc.metadata["section_id"]
-            for doc in hybrid_results
-        ]
-
-        semantic_hits = len(relevant.intersection(semantic_ids))
-        hybrid_hits = len(relevant.intersection(hybrid_ids))
-
-        if semantic_hits <= hybrid_hits:
-            continue
-
-        print("\n=== RETRIEVAL FAILURE ANALYSIS ===")
-        print(f"Question: {query}")
-        print(f"Relevant sections: {sorted(relevant)}")
-
-        for name, ids in [
-            ("Semantic", semantic_ids),
-            ("Hybrid", hybrid_ids),
-        ]:
-            print(f"\n{name} results:")
-
-            for rank, section_id in enumerate(ids, start=1):
-                marker = "✓" if section_id in relevant else " "
-                print(f"{rank:2}. [{marker}] {section_id}")
-
-        return
-
-    print("\nNo case found where Semantic outperformed Hybrid at top 10.")
-
-
-
-def main():
-    sections = json.loads(
-        CATALOG_PATH.read_text(encoding="utf-8")
-    )
-
-    questions = json.loads(
-        BENCHMARK_PATH.read_text(encoding="utf-8")
-    )["questions"]
-
-    # Both base retrievers return 20 candidates.
     bm25 = BM25Retriever(
         sections=sections,
         k=20,
@@ -133,6 +75,7 @@ def main():
     semantic = SemanticRetriever(k=20)
 
     if not semantic.has_index():
+        print("Indexing baseline sections...")
         semantic.index(sections)
 
     hybrid = create_hybrid_retriever(
@@ -146,21 +89,65 @@ def main():
         "Hybrid": hybrid,
     }
 
-    print(f"\nEvaluating {len(questions)} questions...\n")
+    results = {}
+
+    for name, retriever in retrievers.items():
+        print(f"Evaluating {name}...")
+        results[name] = evaluate(retriever, questions)
+
+    return results
+
+
+def _evaluate_contextual(
+    questions: list[dict],
+) -> dict:
+    print("\n=== CONTEXTUAL RETRIEVAL ===")
+
+    sections = load_contextual_sections()
+
+    bm25 = BM25Retriever(
+        sections=sections,
+        k=20,
+    )
+
+    semantic = SemanticRetriever(
+        k=20,
+        collection_name="engineering_contextual_baseline",
+        persist_directory=CHROMA_DIR,
+    )
+
+    # Contextual indexing is handled by contextual_retrieval.py.
+    if not semantic.has_index():
+        raise RuntimeError(
+            "Contextual index not found. "
+            "Run contextual_retrieval.py first."
+        )
+
+    hybrid = create_hybrid_retriever(
+        bm25=bm25,
+        semantic=semantic,
+    )
+
+    retrievers = {
+        "Contextual BM25": bm25,
+        "Contextual Semantic": semantic,
+        "Contextual Hybrid": hybrid,
+    }
 
     results = {}
 
     for name, retriever in retrievers.items():
         print(f"Evaluating {name}...")
+        results[name] = evaluate(retriever, questions)
 
-        results[name] = evaluate(
-            retriever,
-            questions,
-        )
+    return results
 
-    print("\n=== RETRIEVAL EVALUATION ===")
+
+def _print_results(results: dict) -> None:
+    print("\n=== BASELINE VS CONTEXTUAL RETRIEVAL ===")
+
     print(
-        f"{'Retriever':<12}"
+        f"{'Retriever':<24}"
         f"{'Recall@5':>12}"
         f"{'Recall@10':>12}"
         f"{'MRR@10':>12}"
@@ -168,18 +155,39 @@ def main():
 
     for name, metrics in results.items():
         print(
-            f"{name:<12}"
+            f"{name:<24}"
             f"{metrics[R @ 5]:>12.4f}"
             f"{metrics[R @ 10]:>12.4f}"
             f"{metrics[RR @ 10]:>12.4f}"
         )
-        
-        
-    analyze_retrieval_failure(
-        questions=questions,
-        semantic=semantic,
-        hybrid=hybrid,
+
+
+def main():
+    sections = json.loads(
+        CATALOG_PATH.read_text(encoding="utf-8")
     )
+
+    questions = json.loads(
+        BENCHMARK_PATH.read_text(encoding="utf-8")
+    )["questions"]
+
+    print(f"Evaluating {len(questions)} development questions...")
+
+    baseline_results = _evaluate_baseline(
+        sections=sections,
+        questions=questions,
+    )
+
+    contextual_results = _evaluate_contextual(
+        questions=questions,
+    )
+
+    combined_results = {
+        **baseline_results,
+        **contextual_results,
+    }
+
+    _print_results(combined_results)
 
 
 if __name__ == "__main__":

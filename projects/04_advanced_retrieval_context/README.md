@@ -135,3 +135,69 @@ until label quality is reviewed.
 
 ---
 
+### Index Structure — Baseline vs Contextual Retrieval
+
+Both approaches use the same source sections and stable identifiers. The difference is what gets indexed.
+
+**Baseline index (Module 02)**
+
+```text
+Section: kubernetes_hpa:s008
+│
+├── ID: kubernetes_hpa:s008
+│
+├── Indexed document:
+│     ## Autoscaling during rolling update
+│     Kubernetes lets you perform a rolling update...
+│
+├── BM25 index:
+│     Tokens from original section text
+│
+└── Chroma index:
+      Embedding(original section text)
+```
+
+**Contextual index (Module 03)**
+
+```text
+Section: kubernetes_hpa:s008
+│
+├── ID: kubernetes_hpa:s008
+│
+├── Generated context:
+│     This section explains how HorizontalPodAutoscaler
+│     interacts with rolling updates in Kubernetes...
+│
+├── Original text:
+│     ## Autoscaling during rolling update
+│     Kubernetes lets you perform a rolling update...
+│
+├── Indexed document:
+│     [Generated context]
+│     +
+│     [Original section text]
+│
+├── BM25 index:
+│     Tokens from context + original section
+│
+└── Chroma index:
+      Embedding(context + original section)
+```
+
+**Comparison**
+
+| Property | Baseline Index | Contextual Index |
+|---|---|---|
+| Section ID | Same | Same |
+| Indexed text | Original section | Context + original section |
+| BM25 input | Original tokens | Contextualized tokens |
+| Embedding input | Original text | Contextualized text |
+| Number of embeddings | One per section | One per section |
+| Storage | Original index | Separate contextual index |
+| Original source content | Unchanged | Unchanged |
+
+**Why this matters**
+
+A section that lacks technical names or document-level context may be difficult to retrieve independently. Adding a concise contextual prefix can improve both keyword matching and semantic similarity.
+
+However, contextualization can also introduce redundant information or noise. We evaluate both indexes against the same benchmark rather than assuming the contextual index is better.
