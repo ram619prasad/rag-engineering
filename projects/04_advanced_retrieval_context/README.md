@@ -201,3 +201,271 @@ Section: kubernetes_hpa:s008
 A section that lacks technical names or document-level context may be difficult to retrieve independently. Adding a concise contextual prefix can improve both keyword matching and semantic similarity.
 
 However, contextualization can also introduce redundant information or noise. We evaluate both indexes against the same benchmark rather than assuming the contextual index is better.
+
+---
+
+## Module 04 — Parent-Child Retrieval
+
+**Status:** Completed and evaluated
+
+### 1. Objective
+
+Implement Parent-Child Retrieval to combine the precision of searching small chunks with the richer context of larger parent sections.
+
+**Core idea: Search small, return large.**
+
+Unlike conventional semantic retrieval, which searches and returns the same indexed chunk, Parent-Child Retrieval separates the retrieval unit from the context returned to the application.
+
+### 2. Problem: Small vs Large Chunks
+
+Traditional RAG faces a trade-off:
+
+| Small chunks | Large chunks |
+|---|---|
+| Focused semantic representation | More complete context |
+| May improve precise matching | May contain multiple concepts |
+| Can lose important explanations | May dilute embedding relevance |
+| Lower context size | Higher context size |
+
+For example, a child chunk containing only an HPA scaling formula may be easy to retrieve but insufficient for explaining its variables and practical behavior.
+
+Parent-Child Retrieval addresses this by searching small chunks and fetching their complete parent sections.
+
+### 3. Architecture
+
+```text
+                  Engineering Knowledge Base
+                          434 Sections
+                               |
+                               v
+                      Parent Documents
+                               |
+                +--------------+--------------+
+                |                             |
+                v                             v
+         Child Text Splitter              InMemoryStore
+         Size: 400 chars                  Parent Documents
+         Overlap: 60 chars                Key: section_id
+                |                             |
+                v                             |
+          Child Documents                     |
+                |                             |
+                v                             |
+           OpenAI Embeddings                  |
+                |                             |
+                v                             |
+           Chroma Vector DB                   |
+           (Child Index)                      |
+                |                             |
+                v                             |
+          Query Similarity                    |
+                |                             |
+                v                             |
+          Matching Children                   |
+                |                             |
+                v                             |
+          Extract parent_id                   |
+                |                             |
+                +-----------------------------+
+                               |
+                               v
+                   docstore.mget(parent_ids)
+                               |
+                               v
+                    Deduplicate Parents
+                               |
+                               v
+                    Return Full Sections
+```
+
+### 4. Index Structure
+
+The parent sections are stored separately from the indexed child chunks.
+
+**Child vector index — Chroma**
+
+```text
+Child ID: kubernetes_hpa:s008:c001
+│
+├── Text:
+│   "Kubernetes lets you perform a rolling update
+│    on a Deployment..."
+│
+├── Metadata:
+│   parent_id: kubernetes_hpa:s008
+│
+└── Embedding:
+    Embedding(child text)
+```
+
+**Parent document store — InMemoryStore**
+
+```text
+Key: kubernetes_hpa:s008
+│
+└── Document:
+    ├── section_id: kubernetes_hpa:s008
+    ├── document_id: kubernetes_hpa
+    ├── heading_path: Autoscaling during rolling update
+    └── page_content:
+        Full 738-character parent section
+```
+
+The child index supports semantic similarity search.
+
+The parent store supports direct key-based lookup without embeddings.
+
+### 5. Real Example — Kubernetes HPA
+
+**Query:**
+
+> How does Kubernetes HPA manage replicas during rolling updates?
+
+**Retrieved children:**
+
+| Child rank | Parent ID | Matched content |
+|---|---|---|
+| 1 | `kubernetes_hpa:s008` | Autoscaling during rolling updates |
+| 2 | `kubernetes_hpa:s008` | ReplicaSet and StatefulSet behavior |
+| 3 | `kubernetes_hpa:s007` | Workload scaling stability |
+
+**Returned parents:**
+
+```text
+1. kubernetes_hpa:s008
+   Length: 738 characters
+   Topic: Autoscaling during rolling update
+
+2. kubernetes_hpa:s007
+   Length: 371 characters
+   Topic: Stability of workload scale
+```
+
+Three child matches produced only two parent documents because two children belonged to the same parent.
+
+The full-corpus experiment later searched 40 child candidates and returned 20 unique parent sections for the rolling-update query. The directly relevant `kubernetes_hpa:s008` ranked first.
+
+### 6. Implementation
+
+**Libraries:**
+
+- LangChain `ParentDocumentRetriever`
+- `RecursiveCharacterTextSplitter`
+- Chroma
+- OpenAI `text-embedding-3-small`
+- LangChain `InMemoryStore`
+
+**Configuration:**
+
+| Parameter | Value |
+|---|---|
+| Parent unit | Existing EKB section |
+| Parent sections | 434 |
+| Child chunk size | 400 characters |
+| Child overlap | 60 characters |
+| Child search candidates | 40 |
+| Parent store | InMemoryStore |
+| Child index | Persistent Chroma |
+| Evaluation unit | Parent section ID |
+
+**Implementation file:**
+
+`src/advanced_retrieval/parent_child/parent_child_retriever.py`
+
+**Important methods:**
+
+- `create_parent_child_retriever()` — builds the child index and parent document store.
+- `add_documents()` — splits parents, indexes children, and stores parents.
+- `invoke()` — retrieves children and returns unique parent documents.
+
+### 7. Persistence Strategy
+
+The child vector index is persisted in Chroma.
+
+The parent document store uses `InMemoryStore`, which does not survive application restarts.
+
+On subsequent runs:
+
+1. Reuse the existing Chroma child index.
+2. Reload parent sections from the frozen section catalog.
+3. Repopulate `InMemoryStore` using stable section IDs.
+4. Resume retrieval without regenerating child embeddings.
+
+This is appropriate for our local experiment. A production system would typically use durable document storage and stronger index-version consistency checks.
+
+### 8. Evaluation Results
+
+Evaluated against the same 30 development questions used in Modules 02 and 03.
+
+| Retriever | Recall@5 | Recall@10 | MRR@10 |
+|---|---:|---:|---:|
+| Baseline BM25 | 0.9000 | 0.9500 | 0.8250 |
+| Baseline Semantic | 0.9667 | **1.0000** | 0.9159 |
+| Baseline Hybrid | 0.9167 | 0.9500 | 0.9500 |
+| Contextual BM25 | **0.9833** | 0.9833 | 0.8900 |
+| Contextual Semantic | 0.9667 | 0.9833 | 0.9250 |
+| Contextual Hybrid | 0.9667 | 0.9833 | **0.9667** |
+| **Parent-Child** | **0.9167** | **1.0000** | **0.8964** |
+
+**Findings:**
+
+- Parent-Child matched baseline Semantic with Recall@10 of 1.0000.
+- Parent-Child Recall@5 was 0.9167, below baseline Semantic and Contextual Hybrid.
+- Parent-Child MRR@10 was 0.8964, below Contextual Hybrid's 0.9667.
+- Smaller child chunks did not automatically produce better retrieval rankings.
+- Parent expansion returned complete original sections, which may provide more useful context for answer generation.
+
+These metrics measure retrieval of labeled parent sections, not downstream answer correctness.
+
+The benchmark uses automatically generated relevance labels that remain provisional.
+
+### 9. Parent-Child vs Contextual Retrieval
+
+| Aspect | Contextual Retrieval | Parent-Child Retrieval |
+|---|---|---|
+| Core idea | Add document context before indexing | Search children, return parents |
+| Indexed text | Context-enriched section | Small child chunk |
+| Returned text | Enriched section | Full original parent section |
+| LLM preprocessing | Yes, in our implementation | No |
+| Document store | Not required | Required |
+| Main advantage | Improved document matching | More complete returned context |
+| Primary cost | Context-generation and embedding costs | Child indexing and larger returned context |
+
+These approaches are complementary and can be combined in future architectures.
+
+### 10. Trade-offs and Limitations
+
+**Advantages**
+
+- Precise child-level similarity search.
+- Complete parent context returned to the application.
+- Stable parent IDs compatible with existing evaluation.
+- Parent deduplication avoids returning repeated sections.
+- No LLM-generated contextual prefix required.
+
+**Limitations**
+
+- Small child chunks may lose important query context.
+- Multiple child hits can resolve to the same parent, reducing the number of unique results.
+- Parent sections can vary significantly in length.
+- Returning larger parents increases context-window usage.
+- Persistent child indexes must remain synchronized with parent storage.
+- Recall@K alone does not measure the usefulness of expanded context.
+
+### 11. Key Learnings
+
+1. Retrieval units and returned context units do not need to be the same.
+2. Child embeddings identify relevant locations; parent IDs retrieve full context.
+3. `ParentDocumentRetriever.add_documents()` manages child indexing and parent storage.
+4. The parent store can use key-value lookups rather than vector similarity.
+5. Multiple child matches can correspond to one unique parent.
+6. Parent-Child Retrieval is not guaranteed to outperform ordinary semantic retrieval on Recall@K or MRR.
+7. Retrieval quality and answer-context quality should be evaluated separately.
+
+### 12. Conclusion
+
+Parent-Child Retrieval achieved full labeled-section coverage at Recall@10 on our development benchmark, but did not outperform Contextual Hybrid on early ranking.
+
+Its main architectural benefit is **decoupling precise retrieval from the amount of context returned**.
+
+Future experiments should consider parent-context token cost and downstream answer grounding in addition to retrieval metrics.

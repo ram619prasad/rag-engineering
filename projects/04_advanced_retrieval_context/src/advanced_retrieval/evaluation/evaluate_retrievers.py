@@ -18,6 +18,9 @@ from advanced_retrieval.retrievers.contextual_retriever import (
     load_contextual_sections,
     CHROMA_DIR,
 )
+from advanced_retrieval.retrievers.parent_child_retriever import (
+    create_parent_child_retriever,
+)
 
 
 BENCHMARK_PATH = (
@@ -160,6 +163,32 @@ def _print_results(results: dict) -> None:
             f"{metrics[R @ 10]:>12.4f}"
             f"{metrics[RR @ 10]:>12.4f}"
         )
+        
+
+def _evaluate_parent_child(
+    sections: list[dict],
+    questions: list[dict],
+) -> dict:
+    """Evaluate parent-child retrieval using parent section IDs."""
+
+    print("\n=== PARENT-CHILD RETRIEVAL ===")
+
+    retriever = create_parent_child_retriever(
+        sections=sections,
+        child_chunk_size=400,
+        child_chunk_overlap=60,
+        search_k=40,
+    )
+
+    print("Evaluating Parent-Child...")
+
+    return {
+        "Parent-Child": evaluate(
+            retriever,
+            questions,
+        )
+    }
+
 
 
 def main():
@@ -182,9 +211,15 @@ def main():
         questions=questions,
     )
 
+    parent_child_results = _evaluate_parent_child(
+        sections=sections,
+        questions=questions,
+    )
+
     combined_results = {
         **baseline_results,
         **contextual_results,
+        **parent_child_results,
     }
 
     _print_results(combined_results)
