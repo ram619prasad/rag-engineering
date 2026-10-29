@@ -469,3 +469,285 @@ Parent-Child Retrieval achieved full labeled-section coverage at Recall@10 on ou
 Its main architectural benefit is **decoupling precise retrieval from the amount of context returned**.
 
 Future experiments should consider parent-context token cost and downstream answer grounding in addition to retrieval metrics.
+
+
+---
+
+## Module 05 — Hierarchical Retrieval
+
+**Status:** Completed and evaluated
+
+### 1. Objective
+
+Implement top-down hierarchical retrieval using the existing Engineering Knowledge Base (EKB), comprising 30 Markdown documents and 434 extracted sections.
+
+The goal is to explore whether selecting relevant documents before searching their sections improves retrieval quality.
+
+**Core idea: Search broad, then narrow.**
+
+### 2. Why Hierarchical Retrieval?
+
+Traditional semantic retrieval searches every indexed section globally.
+
+```text
+Query
+  |
+  v
+Search all 434 sections
+  |
+  v
+Return top-K sections
+```
+
+Hierarchical retrieval adds a document-selection stage:
+
+```text
+Query
+  |
+  v
+Select relevant documents
+  |
+  v
+Search sections within selected documents
+  |
+  v
+Return top-K sections
+```
+
+Potential benefits include improved topical focus, document-aware navigation, and reduced irrelevant search candidates.
+
+However, an incorrect document-selection decision can exclude relevant sections before they are searched.
+
+### 3. Architecture
+
+```text
+                  User Query
+                       |
+                       v
+             Document-Level Retriever
+                       |
+                       v
+            Chroma Document Index
+              30 representations
+                       |
+                       v
+             Top 3 Document IDs
+                       |
+                       v
+               Metadata Filter
+           document_id IN selected IDs
+                       |
+                       v
+             Section-Level Retriever
+                       |
+                       v
+           Existing Semantic Chroma
+                434 sections
+                       |
+                       v
+              Top 10 Sections
+```
+
+Two retrieval levels are used:
+
+- **Level 0 — Document selection:** Identify relevant engineering documents using compact document representations.
+- **Level 1 — Section retrieval:** Search original sections restricted to those documents.
+
+This is a two-level, top-down retrieval baseline. It does not yet implement recursive subsection traversal, sibling expansion, or RAPTOR-style summary trees.
+
+### 4. Document Representation
+
+Rather than embedding entire Markdown documents, we construct one compact representation per source document.
+
+The representation contains:
+
+1. Document name.
+2. Section headings.
+3. Up to 200 characters of normalized text from each section.
+
+The final representation is limited to 12,000 characters.
+
+Example:
+
+```text
+Document: kubernetes hpa
+
+Section: Stability of workload scale
+When managing the scale of a group of replicas
+using the HorizontalPodAutoscaler...
+
+Section: Autoscaling during rolling update
+Kubernetes lets you perform a rolling update
+on a Deployment...
+```
+
+The `build_document_representations()` function groups sections by `document_id` using `defaultdict(list)` and produces one searchable record for each document.
+
+This is deterministic preprocessing; no LLM summarization is involved.
+
+**Limitation:** Truncation and short section excerpts can omit important content, especially from long documents.
+
+### 5. Index Structure
+
+The architecture reuses our existing semantic retriever with two independently stored Chroma collections.
+
+**Document-level index**
+
+```text
+Collection: engineering_document_level
+
+Document ID: kubernetes_hpa
+
+Text:
+  Document name
+  Section headings
+  Short section excerpts
+
+Metadata:
+  section_id: kubernetes_hpa
+  document_id: kubernetes_hpa
+
+Embedding:
+  OpenAI text-embedding-3-small
+```
+
+The `section_id` field is reused as the document-level record identifier to maintain compatibility with our existing `SemanticRetriever` implementation.
+
+**Section-level index**
+
+```text
+Collection: engineering_semantic_baseline
+
+Section ID: kubernetes_hpa:s008
+
+Text:
+  Full original section content
+
+Metadata:
+  section_id: kubernetes_hpa:s008
+  document_id: kubernetes_hpa
+  heading_path: Autoscaling during rolling update
+
+Embedding:
+  OpenAI text-embedding-3-small
+```
+
+The document-level index selects candidate documents, while the section-level index returns the original source sections.
+
+The section index is reused from Module 02; no additional section embeddings are generated.
+
+### 6. Implementation
+
+**Files:**
+
+- `src/advanced_retrieval/hierarchical/document_retriever.py`
+- `src/advanced_retrieval/hierarchical/hierarchical_retriever.py`
+- `src/advanced_retrieval/evaluation/evaluate_retrievers.py`
+
+**Libraries:**
+
+- LangChain `RunnableLambda`
+- Existing `SemanticRetriever`
+- Chroma
+- OpenAI `text-embedding-3-small`
+
+**Configuration:**
+
+| Parameter | Value |
+|---|---|
+| Source documents | 30 |
+| Source sections | 434 |
+| Document candidates (`document_k`) | 3 |
+| Returned sections (`section_k`) | 10 |
+| Document representation limit | 12,000 characters |
+| Section excerpt limit | 200 characters |
+| Evaluation unit | Original section ID |
+
+The retrieval pipeline performs two semantic searches:
+
+```python
+documents = document_retriever.invoke(query)
+
+document_ids = [
+    document.metadata["document_id"]
+    for document in documents
+]
+
+sections = section_retriever.vectorstore.similarity_search(
+    query=query,
+    k=10,
+    filter={
+        "document_id": {
+            "$in": document_ids
+        }
+    },
+)
+```
+
+Chroma applies the document-ID filter during section-level retrieval, rather than retrieving globally and filtering the results afterward.
+
+### 7. Real Example — Kubernetes HPA
+
+**Query:**
+
+> How does Kubernetes HPA manage replicas during rolling updates?
+
+**Level 0 — Retrieved documents**
+
+| Rank | Document | Representation size |
+|---|---|---:|
+| 1 | `kubernetes_hpa` | 6,966 characters |
+| 2 | `kubernetes_resource_management` | 8,303 characters |
+| 3 | `kubernetes_pod_scheduling` | 6,190 characters |
+
+The correct Kubernetes HPA document ranked first.
+
+**Level 1 — Retrieved sections**
+
+| Rank | Section ID | Topic |
+|---|---|---|
+| 1 | `kubernetes_hpa:s008` | Autoscaling during rolling update |
+| 2 | `kubernetes_hpa:s025` | Migrating workloads to horizontal autoscaling |
+| 3 | `kubernetes_hpa:s001` | How HorizontalPodAutoscaler works |
+| 4 | `kubernetes_hpa:s022` | HPA support in kubectl |
+| 5 | `kubernetes_hpa:s007` | Stability of workload scale |
+
+All ten retrieved sections belonged to `kubernetes_hpa`, even though three documents were eligible.
+
+This is expected: document selection restricts which sections may be searched, but does not require results to be distributed across selected documents.
+
+The directly relevant rolling-update section ranked first.
+
+### 8. Evaluation
+
+Evaluated using the existing 30-question development benchmark and the same section-level relevance judgments used in previous modules.
+
+| Retriever | Recall@5 | Recall@10 | MRR@10 |
+|---|---:|---:|---:|
+| BM25 | 0.9000 | 0.9500 | 0.8250 |
+| Semantic | 0.9667 | **1.0000** | 0.9159 |
+| Hybrid | 0.9167 | 0.9500 | 0.9500 |
+| Contextual BM25 | **0.9833** | 0.9833 | 0.8900 |
+| Contextual Semantic | 0.9667 | 0.9833 | 0.9250 |
+| Contextual Hybrid | 0.9667 | 0.9833 | **0.9667** |
+| Parent-Child | 0.9167 | **1.0000** | 0.8964 |
+| **Hierarchical (docs=3)** | **0.9667** | **1.0000** | **0.9159** |
+
+**Findings:**
+
+- Hierarchical Retrieval matched baseline Semantic Retrieval on all three aggregate metrics.
+- Both achieved Recall@10 of 1.0000.
+- Contextual Hybrid retained the highest MRR@10 at 0.9667.
+- The additional document-selection stage produced no measurable improvement in these aggregate retrieval metrics.
+- Identical aggregate metrics do not necessarily mean identical per-query rankings.
+
+These results apply to the evaluated `document_k=3` configuration. Comparisons using `document_k=1` or `document_k=5` have not yet been measured.
+
+The benchmark's automatically generated relevance judgments remain provisional.
+
+### 9. Parent-Child vs Hierarchical Retrieval
+
+| Aspect | Parent-Child | Hierarchical |
+|---|---|---|
+| Retrieval direction | Bottom-up | Top-down |
+| First search unit

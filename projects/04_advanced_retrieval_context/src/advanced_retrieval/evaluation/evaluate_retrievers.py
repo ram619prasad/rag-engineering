@@ -18,8 +18,13 @@ from advanced_retrieval.retrievers.contextual_retriever import (
     load_contextual_sections,
     CHROMA_DIR,
 )
+
 from advanced_retrieval.retrievers.parent_child_retriever import (
     create_parent_child_retriever,
+)
+
+from advanced_retrieval.retrievers.hierarchical_retriever import (
+    create_hierarchical_retriever,
 )
 
 
@@ -145,6 +150,21 @@ def _evaluate_contextual(
 
     return results
 
+def _evaluate_hierarchical(
+    sections: list[dict],
+    questions: list[dict],
+) -> dict:
+    print("\n=== HIERARCHICAL RETRIEVAL ===")
+
+    retriever = create_hierarchical_retriever(
+        sections=sections,
+        document_k=3,
+        section_k=10,
+    )
+
+    return {
+        "Hierarchical": evaluate(retriever, questions)
+    }
 
 def _print_results(results: dict) -> None:
     print("\n=== BASELINE VS CONTEXTUAL RETRIEVAL ===")
@@ -216,10 +236,16 @@ def main():
         questions=questions,
     )
 
+    hierarchical_results = _evaluate_hierarchical(
+        sections=sections,
+        questions=questions,
+    )
+
     combined_results = {
         **baseline_results,
         **contextual_results,
         **parent_child_results,
+        **hierarchical_results,
     }
 
     _print_results(combined_results)
