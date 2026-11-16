@@ -1,0 +1,25 @@
+[project]
+name = "project-02-citation-aware-rag"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Ram Prasad Reddy", email = "ram619prasad@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "datasets>=5.2.0",
+    "langchain-chroma>=1.1.0",
+    "langchain-core>=1.8.1",
+    "langchain-openai>=1.8.0",
+    "pydantic>=2.14.3",
+    "python-dotenv>=1.2.4",
+    "rich>=15.0.0",
+]
+
+[project.scripts]
+project-02-citation-aware-rag = "project_02_citation_aware_rag:main"
+
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13.0"]
+build-backend = "uv_build"
