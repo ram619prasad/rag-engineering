@@ -1,0 +1,22 @@
+[project]
+name = "project-01-research-rag"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "datasets>=5.2.0",
+    "deepeval>=2.9.3",
+    "ir-measures>=0.4.3",
+    "langchain-chroma>=1.1.0",
+    "langchain-core>=1.8.0",
+    "langchain-openai>=1.7.4",
+    "python-dotenv>=1.2.4",
+]
+
+[project.scripts]
+project-01-research-rag = "project_01_research_rag:main"
+
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13.0"]
+build-backend = "uv_build"
