@@ -34,3 +34,23 @@
 - Generated an evidence-grounded answer with two valid citations.
 - Verified abstention when retrieved passages cannot answer the question.
 - Normalized unanswerable responses to a readable message.
+
+### 6. Integrated Claim Extraction
+
+- Connected semantic retrieval, grounded generation, and structured claim extraction.
+- Extracted independently verifiable claims from real QASPER-generated answers.
+- Preserved candidate citation IDs for downstream verification.
+- Observed that valid citation IDs can be incorrectly associated with factual claims.
+
+**Learning:** Citation validity and citation correctness are different. Claim-level evidence verification is needed to determine whether retrieved passages genuinely support individual claims.
+
+### 7. Citation Verification & Evidence Discovery
+
+- Implemented `verify_claim()` to classify claims as supported, contradicted, or insufficiently supported.
+- Implemented `verify_claims()` to audit claim–citation pairs against retrieved evidence.
+- Implemented `find_supporting_citations()` to discover supporting passages.
+- Verified all three verdicts using controlled examples.
+- Detected incorrect citation attribution in real QASPER answers.
+- Successfully identified `1909.00694:11:4` as the correct supporting citation for a claim initially associated with `1909.00694:4:1`.
+
+**Learning:** Correct answers can contain incorrect citations. Citation auditing and evidence discovery are separate, complementary capabilities.
