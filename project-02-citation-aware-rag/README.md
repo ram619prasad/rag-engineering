@@ -25,3 +25,12 @@
 - Retrieved five relevant paragraphs for the question "What is the seed lexicon?"
 - Found human-annotated evidence `1909.00694:4:1` at rank 2.
 - Verified Hit@5 = 1 and Reciprocal Rank = 0.5 for the sample question.
+
+### 5. Grounded Answer Generation
+
+- Implemented reusable evidence formatting and grounded answer generation.
+- Used LangChain, ChatOpenAI, and Pydantic structured output.
+- Added citation ID validation and answerability consistency checks.
+- Generated an evidence-grounded answer with two valid citations.
+- Verified abstention when retrieved passages cannot answer the question.
+- Normalized unanswerable responses to a readable message.

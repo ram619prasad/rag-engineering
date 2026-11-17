@@ -1,6 +1,12 @@
 from pydantic import BaseModel
 from typing import Literal
 
+class GroundedAnswer(BaseModel):
+    answer: str
+    citation_ids : list[str]
+    is_answerable: bool
+    
+
 class Claim(BaseModel):
     text: str
     citation_ids : list[str]
