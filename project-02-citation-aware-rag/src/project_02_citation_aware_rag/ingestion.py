@@ -12,7 +12,7 @@ def paper_to_documents(paper: dict) -> list[Document]:
     ):
         for paragraph_index, paragraph in enumerate(paragraphs):
             if not paragraph.strip():
-                continue;
+                continue
             
             document = Document(
                 id=f"{paper_id}:{section_index}:{paragraph_index}",
