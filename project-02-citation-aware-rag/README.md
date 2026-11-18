@@ -1,56 +1,158 @@
-## Implementation Progress
+# Project 02 — Citation-Aware RAG
 
-### 1. QASPER Ingestion
-- Implemented reusable `paper_to_documents()` in `ingestion.py`.
-- Converted research paper paragraphs into LangChain Documents.
-- Preserved stable document IDs and section-level metadata.
-- Verified extraction of 56 paragraphs from the first QASPER paper.
+## Objective
 
-### 2. Vector Store & Indexing
-- Configured persistent Chroma with OpenAI `text-embedding-3-small` embeddings.
-- Created the `qasper_citation_aware` collection.
-- Implemented reusable, idempotent indexing in `indexing.py`.
-- Verified that repeated indexing skips all 56 existing documents.
+Build a RAG system that generates answers from research papers and verifies whether the cited evidence actually supports each factual claim.
 
-### 3. Claim Extraction
-- Defined Pydantic models for claims and verification results.
-- Implemented structured claim extraction using LangChain and OpenAI.
-- Successfully extracted three independently verifiable claims from a sample answer.
-- Preserved candidate citation IDs for subsequent verification.
+**Key improvement over Project 01:** Validating citation IDs is not enough. We must check whether the referenced passages support the claims.
 
-### 4. Semantic Retrieval
+## Tech Stack
 
-- Implemented reusable `retrieve_evidence()` in `retrieval.py`.
-- Used Chroma similarity search with configurable Top-K and `paper_id` metadata filtering.
-- Retrieved five relevant paragraphs for the question "What is the seed lexicon?"
-- Found human-annotated evidence `1909.00694:4:1` at rank 2.
-- Verified Hit@5 = 1 and Reciprocal Rank = 0.5 for the sample question.
+- Python + uv
+- QASPER dataset (Hugging Face)
+- LangChain
+- Chroma
+- OpenAI embeddings (`text-embedding-3-small`)
+- ChatOpenAI (`gpt-4.1-mini`)
+- Pydantic
+- Rich
 
-### 5. Grounded Answer Generation
+## Architecture
 
-- Implemented reusable evidence formatting and grounded answer generation.
-- Used LangChain, ChatOpenAI, and Pydantic structured output.
-- Added citation ID validation and answerability consistency checks.
-- Generated an evidence-grounded answer with two valid citations.
-- Verified abstention when retrieved passages cannot answer the question.
-- Normalized unanswerable responses to a readable message.
+```text
+QASPER Dataset
+      ↓
+Document Ingestion
+      ↓
+OpenAI Embeddings + Chroma
+      ↓
+Semantic Retrieval
+      ↓
+Grounded Answer Generation
+      ↓
+Claim Extraction
+      ↓
+Original Citation Verification
+      ↓
+Supporting Evidence Discovery
+      ↓
+Citation Quality Evaluation
+      ↓
+Rich Execution Report
+```
 
-### 6. Integrated Claim Extraction
+## Implementation
 
-- Connected semantic retrieval, grounded generation, and structured claim extraction.
-- Extracted independently verifiable claims from real QASPER-generated answers.
-- Preserved candidate citation IDs for downstream verification.
-- Observed that valid citation IDs can be incorrectly associated with factual claims.
+| Module | Implementation |
+|---|---|
+| `ingestion.py` | Convert research paragraphs into LangChain Documents |
+| `vector_store.py` | Initialize persistent Chroma |
+| `indexing.py` | Skip previously indexed document IDs |
+| `retrieval.py` | Paper-filtered semantic similarity search |
+| `generation.py` | Generate grounded answers, validate citations, and abstain when needed |
+| `claim_extraction.py` | Extract independently verifiable factual statements |
+| `verification.py` | Verify original citations and discover supporting passages |
+| `evaluation.py` | Calculate citation precision and claim support coverage |
+| `pipeline.py` | Orchestrate the reusable modules |
+| `reporting.py` | Display execution results using Rich |
+| `main.py` | Application entry point |
 
-**Learning:** Citation validity and citation correctness are different. Claim-level evidence verification is needed to determine whether retrieved passages genuinely support individual claims.
+## Dataset and Experiments
 
-### 7. Citation Verification & Evidence Discovery
+**Dataset:** [allenai/qasper](https://huggingface.co/datasets/allenai/qasper)
 
-- Implemented `verify_claim()` to classify claims as supported, contradicted, or insufficiently supported.
-- Implemented `verify_claims()` to audit claim–citation pairs against retrieved evidence.
-- Implemented `find_supporting_citations()` to discover supporting passages.
-- Verified all three verdicts using controlled examples.
-- Detected incorrect citation attribution in real QASPER answers.
-- Successfully identified `1909.00694:11:4` as the correct supporting citation for a claim initially associated with `1909.00694:4:1`.
+Initial experiments used paper `1909.00694`.
 
-**Learning:** Correct answers can contain incorrect citations. Citation auditing and evidence discovery are separate, complementary capabilities.
+- Extracted and indexed 56 paragraphs.
+- Verified idempotent indexing.
+- Retrieved five paragraphs for "What is the seed lexicon?"
+- Found the annotated supporting evidence at rank 2.
+- Generated grounded answers with valid citation IDs.
+- Verified abstention for an unrelated question.
+- Extracted individual claims from a generated answer.
+
+## Citation Verification
+
+Implemented three verification outcomes:
+
+- **Supported:** Evidence establishes the claim.
+- **Contradicted:** Evidence conflicts with the claim.
+- **Insufficient evidence:** Evidence cannot establish or refute the claim.
+
+All three outcomes were verified using controlled examples.
+
+### Evidence Discovery Experiment
+
+Claim: The seed lexicon contains 15 positive and 15 negative words.
+
+- Original citation `1909.00694:4:1` — Insufficient evidence.
+- Discovered citation `1909.00694:11:4` — Supported.
+
+This demonstrated that a correct answer can have an incorrect citation.
+
+## Evaluation
+
+Implemented:
+
+**Citation Precision**
+
+Supported claim–citation pairs divided by total evaluated pairs.
+
+**Claim Support Coverage**
+
+Claims with at least one supporting citation divided by total claims.
+
+Controlled experiment results:
+
+| Metric | Score |
+|---|---:|
+| Citation precision | 0.50 |
+| Claim support coverage | 0.667 |
+
+A separate end-to-end QASPER run generated three claims and reported 1.0 for original citation precision, original claim coverage, and discovered claim coverage.
+
+These are small-sample LLM-judged results, not general accuracy guarantees.
+
+## Running the Project
+
+Install dependencies:
+
+```bash
+uv sync
+```
+
+Configure your OpenAI API key using environment variables or a local `.env` file.
+
+Run:
+
+```bash
+uv run main.py
+```
+
+The Rich report displays:
+
+1. Dataset and indexing summary
+2. Generated answer
+3. Retrieved evidence
+4. Extracted claims
+5. Original citation verification
+6. Supporting evidence discovery
+7. Citation evaluation metrics
+
+## Key Learnings
+
+- A claim is an individual factual statement made by the LLM.
+- A citation identifies the evidence used to support a claim.
+- A valid citation ID does not guarantee actual support.
+- Missing evidence is different from contradictory evidence.
+- Citation auditing and evidence discovery solve different problems.
+- Citation precision and claim support coverage measure different aspects of citation quality.
+- Reusable modules can be orchestrated into one end-to-end application.
+
+## Limitations
+
+- Evaluated on a small number of QASPER examples.
+- LLM-based verification can make mistakes.
+- Evidence discovery searches only retrieved passages.
+- Individual passages are verified separately, not as combined evidence.
+- Verification requires multiple LLM calls and can increase latency and cost.

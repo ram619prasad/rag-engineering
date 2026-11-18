@@ -21,3 +21,21 @@ class VerificationResult(BaseModel):
 
 class ExtractedClaims(BaseModel):
     claims: list[Claim]
+    
+from langchain_core.documents import Document
+
+
+class PipelineResult(BaseModel):
+    paper_id: str
+    paper_title: str
+    documents_indexed: int
+    newly_indexed: int
+    question: str
+    retrieved_documents: list[Document]
+    grounded_answer: GroundedAnswer
+    claims: list[Claim]
+    original_verifications: list[VerificationResult]
+    discovered_verifications: list[VerificationResult]
+    original_citation_precision: float
+    original_claim_coverage: float
+    discovered_claim_coverage: float
