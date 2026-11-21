@@ -56,3 +56,61 @@ For Question 0 — *What is the seed lexicon?*
 - Implement idempotent document indexing.
 - Retrieve top-K passages for a question.
 - Compare retrieved document IDs against gold evidence.
+
+
+### 04.1 — Persistent Chroma Initialization
+
+**Implemented**
+- Created reusable `create_vector_store()` in `vector_store.py`.
+- Configured OpenAI `text-embedding-3-small` embeddings.
+- Initialized a persistent Chroma vector database under `data/chroma/`.
+- Configured the `qasper` collection.
+
+**Verified**
+- Collection: `qasper`
+- Indexed documents: `0`
+- Result: Passed
+
+**Learning:** Vector store initialization and document indexing are separate responsibilities. A persistent Chroma collection can be reopened across executions without rebuilding its contents.
+
+**Next:** Implement idempotent document indexing.
+
+### 04.2 — Idempotent Document Indexing
+
+**Implemented**
+- Created reusable `index_documents()` in `indexing.py`.
+- Identified existing document IDs using Chroma's `get()` API.
+- Indexed only documents not already present in the collection.
+- Added validation for missing document IDs.
+- Skipped insertion when no new documents were found.
+- Returned the number of newly indexed documents.
+
+**Verified**
+- Documents prepared: `56`
+- First indexing run: `56` newly indexed
+- Second indexing call: `0` newly indexed
+- Subsequent program execution: `0` newly indexed
+- Final collection count: `56`
+- Result: Passed
+
+**Learning:** Idempotent indexing prevents unnecessary embedding API calls, while persistent storage allows experiments to reuse the same document collection.
+
+**Next:** Implement semantic retrieval with paper-level filtering.
+
+### 04.3 — Semantic Retrieval ✅
+
+**Implemented**
+- Created reusable `retrieve_evidence()` in `retrieval.py`.
+- Used Chroma's `similarity_search()` to retrieve top-K paragraphs.
+- Applied `paper_id` metadata filtering to restrict retrieval to the target research paper.
+
+**Verified**
+- Question: `What is the seed lexicon?`
+- Documents retrieved: `5`
+- Gold evidence document: `1909.00694:4:1`
+- Gold evidence rank: `2`
+- Result: Passed
+
+**Learning:** Successful retrieval means the required evidence appears among the retrieved results. Its position also matters: ranking metrics help distinguish evidence retrieved first from evidence buried lower in the results.
+
+**Next:** Implement reusable Recall@K and Reciprocal Rank evaluation.
