@@ -1,0 +1,195 @@
+{
+  "builder_name": "parquet",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "qasper",
+  "dataset_size": 53855530,
+  "description": "",
+  "download_size": 26198550,
+  "features": {
+    "id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "title": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "abstract": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "full_text": {
+      "section_name": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "List"
+      },
+      "paragraphs": {
+        "feature": {
+          "feature": {
+            "dtype": "string",
+            "_type": "Value"
+          },
+          "_type": "List"
+        },
+        "_type": "List"
+      }
+    },
+    "qas": {
+      "question": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "List"
+      },
+      "question_id": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "List"
+      },
+      "nlp_background": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "List"
+      },
+      "topic_background": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "List"
+      },
+      "paper_read": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "List"
+      },
+      "search_query": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "List"
+      },
+      "question_writer": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "List"
+      },
+      "answers": {
+        "feature": {
+          "answer": {
+            "feature": {
+              "unanswerable": {
+                "dtype": "bool",
+                "_type": "Value"
+              },
+              "extractive_spans": {
+                "feature": {
+                  "dtype": "string",
+                  "_type": "Value"
+                },
+                "_type": "List"
+              },
+              "yes_no": {
+                "dtype": "bool",
+                "_type": "Value"
+              },
+              "free_form_answer": {
+                "dtype": "string",
+                "_type": "Value"
+              },
+              "evidence": {
+                "feature": {
+                  "dtype": "string",
+                  "_type": "Value"
+                },
+                "_type": "List"
+              },
+              "highlighted_evidence": {
+                "feature": {
+                  "dtype": "string",
+                  "_type": "Value"
+                },
+                "_type": "List"
+              }
+            },
+            "_type": "List"
+          },
+          "annotation_id": {
+            "feature": {
+              "dtype": "string",
+              "_type": "Value"
+            },
+            "_type": "List"
+          },
+          "worker_id": {
+            "feature": {
+              "dtype": "string",
+              "_type": "Value"
+            },
+            "_type": "List"
+          }
+        },
+        "_type": "List"
+      }
+    },
+    "figures_and_tables": {
+      "caption": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "List"
+      },
+      "file": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "List"
+      }
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 80054080,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 28466446,
+      "num_examples": 888,
+      "dataset_name": "qasper"
+    },
+    "validation": {
+      "name": "validation",
+      "num_bytes": 9900193,
+      "num_examples": 281,
+      "dataset_name": "qasper"
+    },
+    "test": {
+      "name": "test",
+      "num_bytes": 15488891,
+      "num_examples": 416,
+      "dataset_name": "qasper"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}
